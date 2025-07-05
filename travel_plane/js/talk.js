@@ -19,7 +19,7 @@ new TypeIt("#tqyxhj", {
         delay: 500
     })
     .type("一起欣赏风景吧")
-    .pause(3000)
+    .pause(0)
     .go();
 
 new TypeIt('#talkToXHJ', {
