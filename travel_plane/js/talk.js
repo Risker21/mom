@@ -1,5 +1,4 @@
 new TypeIt("#tqyxhj", {
-        loop: true,
         cursorSpeed: 1000,
         speed: 100
     })
