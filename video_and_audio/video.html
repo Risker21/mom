@@ -88,6 +88,30 @@
         overflow: hidden;
         white-space: nowrap;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        position: relative;
+      }
+      .ad-warning .close-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #856404;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 0 5px;
+      }
+      @media (max-width: 768px) {
+        .ad-warning {
+          white-space: normal;
+          text-align: center;
+          padding-right: 30px;
+        }
+        .ad-warning span {
+          animation: none;
+          padding-left: 0;
+        }
       }
       .ad-warning span {
         display: inline-block;
@@ -274,7 +298,34 @@
             >⚠️ 请注意：视频中可能包含第三方广告，请勿轻信任何广告内容 |
             请勿输入个人信息 | 请勿下载不明软件 | 请勿转账汇款</span
           >
+          <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
         </div>
+        <script>
+          // 检测移动设备
+          function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          }
+          
+          // 移动端广告拦截增强
+          if(isMobile()) {
+            document.addEventListener('DOMContentLoaded', function() {
+              // 拦截常见广告iframe
+              document.querySelectorAll('iframe').forEach(iframe => {
+                if(iframe.src.includes('ad') || iframe.src.includes('ads')) {
+                  iframe.remove();
+                }
+              });
+              
+              // 监听可能的弹窗广告
+              window.addEventListener('load', function() {
+                setTimeout(function() {
+                  const popups = document.querySelectorAll('div[id*="popup"], div[class*="popup"]');
+                  popups.forEach(popup => popup.remove());
+                }, 1000);
+              });
+            });
+          }
+        </script>
         <h1>视频解析播放器</h1>
         <div id="videoContainer">
           <iframe id="videoFrame" allowfullscreen></iframe>
@@ -299,6 +350,14 @@
         />
         <select id="parseLine">
           <option value="1">线路1</option>
+          <option value="2">线路2</option>
+          <option value="3">线路3</option>
+          <option value="4">线路4</option>
+          <option value="5">线路5</option>
+          <option value="6">线路6</option>
+          <option value="7">线路7</option>
+          <option value="8">线路8</option>
+          <option value="9">线路9</option>
           <option value="10">线路10(全能)</option>
         </select>
         <button id="playBtn" onclick="playVideo()">播放视频</button>
