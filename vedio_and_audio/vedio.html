@@ -89,15 +89,6 @@
         white-space: nowrap;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
-      @media (max-width: 768px) {
-        .ad-warning {
-          white-space: normal;
-          text-align: center;
-        }
-        .ad-warning span {
-          animation: none;
-        }
-      }
       .ad-warning span {
         display: inline-block;
         padding-left: 100%;
@@ -274,6 +265,14 @@
         <li>部分视频可能需要等待解析</li>
         <li>遇到广告请勿轻信</li>
       </ul>
+      
+      <h2 style="color: #d63384; margin-top: 20px;"><strong><u>特别特别特别说明</u></strong></h2>
+      <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; border-radius: 4px; margin: 10px 0;">
+        <p style="color: #856404; font-weight: 400; margin: 0;">
+          <strong>手机端用户</strong>请特别注意：线路2~9广告特别不友好，后期我也会更换更好的接口，现在只能使线路1或10！<br>
+          <strong>电脑端用户</strong>可使用全部线路(1-10)。
+        </p>
+      </div>
     </div>
 
     <div class="main-content">
@@ -284,67 +283,6 @@
             请勿输入个人信息 | 请勿下载不明软件 | 请勿转账汇款</span
           >
         </div>
-        <script>
-          // 检测移动设备
-          function isMobile() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-          }
-          
-          // 移动端广告拦截增强
-          if(isMobile()) {
-            document.addEventListener('DOMContentLoaded', function() {
-              // 拦截常见广告iframe
-              document.querySelectorAll('iframe').forEach(iframe => {
-                if(iframe.src.includes('ad') || iframe.src.includes('ads')) {
-                  iframe.remove();
-                }
-              });
-              
-              // 监听视频iframe加载后的广告
-              const videoFrame = document.getElementById('videoFrame');
-              if(videoFrame) {
-                videoFrame.addEventListener('load', function() {
-                  try {
-                    // 尝试访问iframe内容来移除广告
-                    const iframeDoc = videoFrame.contentDocument || videoFrame.contentWindow.document;
-                    const adElements = iframeDoc.querySelectorAll('div[class*="ad"], div[id*="ad"], .ad-container, .ad-banner');
-                    adElements.forEach(ad => ad.remove());
-                    
-                    // 监听iframe内的动态加载广告
-                    const observer = new MutationObserver(function(mutations) {
-                      mutations.forEach(function(mutation) {
-                        mutation.addedNodes.forEach(function(node) {
-                          if(node.nodeType === 1 && 
-                            (node.className.includes('ad') || 
-                             node.id.includes('ad') ||
-                             node.tagName === 'IFRAME' && 
-                             (node.src.includes('ad') || node.src.includes('ads')))) {
-                            node.remove();
-                          }
-                        });
-                      });
-                    });
-                    
-                    observer.observe(iframeDoc.body, {
-                      childList: true,
-                      subtree: true
-                    });
-                  } catch(e) {
-                    console.log('广告拦截受限:', e);
-                  }
-                });
-              }
-              
-              // 监听可能的弹窗广告
-              window.addEventListener('load', function() {
-                setTimeout(function() {
-                  const popups = document.querySelectorAll('div[id*="popup"], div[class*="popup"]');
-                  popups.forEach(popup => popup.remove());
-                }, 1000);
-              });
-            });
-          }
-        </script>
         <h1>视频解析播放器</h1>
         <div id="videoContainer">
           <iframe id="videoFrame" allowfullscreen></iframe>
