@@ -257,7 +257,7 @@
   </head>
   <body>
     <video id="bgVideo" autoplay muted loop>
-      <source src="MP4/vediobg.mp4" type="video/mp4">
+      <source src="MP4/vediobg.mp4" type="video/mp4" />
     </video>
     <div class="sidebar">
       <h2>使用教程</h2>
@@ -274,11 +274,22 @@
         <li>部分视频可能需要等待解析</li>
         <li>遇到广告请勿轻信</li>
       </ul>
-      
-      <h2 style="color: #d63384; margin-top: 20px;"><strong><u>特别特别特别说明</u></strong></h2>
-      <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; border-radius: 4px; margin: 10px 0;">
-        <p style="color: #856404; font-weight: 400; margin: 0;">
-          <strong>手机端用户</strong>请特别注意：线路2~9广告特别不友好，后期我也会更换更好的接口，现在建议只使用线路1或10！<br>
+
+      <h2 style="color: #d63384; margin-top: 20px">
+        <strong><u>特别特别特别说明</u></strong>
+      </h2>
+      <div
+        style="
+          background: #fff8e1;
+          border-left: 4px solid #ffc107;
+          padding: 12px;
+          border-radius: 4px;
+          margin: 10px 0;
+        "
+      >
+        <p style="color: #856404; font-weight: 400; margin: 0">
+          <strong>手机端用户</strong
+          >请特别注意：线路2~9广告特别不友好，后期我也会更换更好的接口，现在建议只使用线路1或10！<br />
           <strong>电脑端用户</strong>可使用全部线路(1-10)。
         </p>
       </div>
@@ -327,20 +338,20 @@
           <option value="10">线路10(全能)</option>
         </select>
         <button id="playBtn" onclick="playVideo()">播放视频</button>
-
         <script>
           function playVideo() {
             const videoUrl = document.getElementById("videoUrl").value;
             const parseLine = document.getElementById("parseLine").value;
-            
+
             if (!videoUrl) {
               alert("请输入视频地址");
               return;
             }
 
+            // 修改线路1为直接调用z1.m1907.top接口（整合中转页面逻辑）
             const parseUrls = [
-              "https://z1.m1907.top/?jx= ",
-              "https://www.8090g.cn/?url=",
+              "https://z1.m1907.top/?jx=", // 线路1：直接拼接接口，无需中转页面
+              "https://www.8090g.cn/?url=", // 其他线路保持不变
               "https://g.123456789.qpon/aa/aaa.php?url=",
               "https://jx.m3u8.tv/jiexi/?url=",
               "https://jx.m3u8.tv/jx/jx.php?url=",
@@ -348,27 +359,32 @@
               "https://py.123456789.qpon/1/playm3u8.php?url=",
               "https://www.ckplayer.vip/jiexi/?url=",
               "https://cp.123456789.qpon/jiexi.php?url=",
-              "https://www.pouyun.com/?url="
+              "https://www.pouyun.com/?url=",
             ];
-            
-            // Use selected line number (1-10) to pick parser
+
+            // 直接调用对应线路的接口（线路1已整合中转逻辑）
             const selectedParser = parseInt(parseLine) - 1;
-            document.getElementById("videoFrame").src = 
-              parseUrls[selectedParser] + encodeURIComponent(videoUrl) + "&line=" + parseLine;
-            
-            // Fallback if selected parser fails
-            document.getElementById("videoFrame").onerror = function() {
+            document.getElementById("videoFrame").src =
+              parseUrls[selectedParser] +
+              encodeURIComponent(videoUrl) +
+              "&line=" +
+              parseLine;
+
+            // 解析失败的 fallback 逻辑（保持不变）
+            document.getElementById("videoFrame").onerror = function () {
               alert(`线路${parseLine}解析失败，正在尝试其他线路...`);
-              // Try next parsers in sequence
               let currentParser = 0;
               const tryNextParser = () => {
-                if(currentParser >= parseUrls.length) {
-                  alert('所有解析线路都失败了，请稍后再试');
+                if (currentParser >= parseUrls.length) {
+                  alert("所有解析线路都失败了，请稍后再试");
                   return;
                 }
-                if(currentParser !== selectedParser) { // Skip the already tried one
-                  document.getElementById("videoFrame").src = 
-                    parseUrls[currentParser] + encodeURIComponent(videoUrl) + "&line=" + parseLine;
+                if (currentParser !== selectedParser) {
+                  document.getElementById("videoFrame").src =
+                    parseUrls[currentParser] +
+                    encodeURIComponent(videoUrl) +
+                    "&line=" +
+                    parseLine;
                 }
                 currentParser++;
               };
@@ -383,10 +399,7 @@
             <h4>视频平台</h4>
             <div class="site-grid">
               <a href="https://www.iqiyi.com" target="_blank">
-                <img
-                  src="https://jx.vcs6.com/imglogo/iqiyi.png"
-                  alt="爱奇艺"
-                />
+                <img src="https://jx.vcs6.com/imglogo/iqiyi.png" alt="爱奇艺" />
               </a>
               <a href="https://www.youku.com" target="_blank">
                 <img
