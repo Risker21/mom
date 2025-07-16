@@ -20,11 +20,14 @@
 
       #bgVideo {
         position: fixed;
+        top: 0;
+        left: 0;
         right: 0;
         bottom: 0;
         min-width: 100%;
         min-height: 100%;
         z-index: -1;
+        object-fit: cover;
       }
 
       body {
@@ -44,6 +47,7 @@
         box-sizing: border-box;
         position: relative;
         min-height: 100vh;
+        overflow-x: hidden;
       }
       .sidebar {
         padding: 20px;
@@ -95,21 +99,31 @@
         overflow: hidden;
         position: relative;
       }
+      .ad-warning {
+        position: relative;
+        height: 30px;
+        overflow: hidden;
+      }
       .ad-warning span {
+        position: absolute;
         display: inline-block;
         font-weight: 500;
         font-size: 18px;
         white-space: nowrap;
-        animation: scrollText 25s linear infinite;
         padding: 0 15px;
+        animation: scrollText 15s linear infinite;
+        left: 100%;
+      }
+      .ad-warning span:nth-child(2) {
+        animation-delay: 7.5s;
       }
 
       @keyframes scrollText {
-        from {
-          transform: translateX(100%);
+        0% {
+          transform: translateX(0);
         }
-        to {
-          transform: translateX(-100%);
+        100% {
+          transform: translateX(-200%);
         }
       }
       .ad-warning span strong {
@@ -344,11 +358,11 @@
          <b style="color: #f84e05;font-size: 18px;">视频中的广告非本人所加</b> <br />
           <b style="color: #720b77;font-size: 15px;">请勿相信,请勿点击!!!</b>
           <br />
-          <strong style="font-size: 20px;">手机端用户:</strong> <br />请特别注意,只能使用
+          <strong style="font-size: 20px;">手机用户:</strong> <br />请特别注意,只能使用
           <b style="color: #da500a">线路1,2</b><br />
-          <strong style="font-size: 20px;">电脑端用户:</strong><br />可使用全部线路
+          <strong style="font-size: 20px;">电脑用户:</strong><br />可使用全部线路
           <br />
-          <strong style="font-size: 20px;">平板用户：<br></strong>暂未进行测试,请谨慎选择路线
+          <strong style="font-size: 20px;">平板用户：<br></strong>暂未进行测试,请谨慎选择线路
         </p>
       </div>
     </div>
@@ -360,7 +374,21 @@
             >⚠️ 请注意：视频中可能包含第三方广告，请勿轻信任何广告内容 |
             <strong>请勿输入个人信息</strong> |
             <strong>请勿下载不明软件</strong> |
-            <strong>请勿转账汇款</strong></span
+            <strong>请勿转账汇款</strong> |
+            <strong>警惕虚假中奖信息</strong> |
+            <strong>小心假冒客服诈骗</strong> |
+            <strong>拒绝任何形式的付费解锁</strong> |
+            <strong>不要扫描不明二维码</strong></span
+          >
+          <span
+            >⚠️ 请注意：视频中可能包含第三方广告，请勿轻信任何广告内容 |
+            <strong>请勿输入个人信息</strong> |
+            <strong>请勿下载不明软件</strong> |
+            <strong>请勿转账汇款</strong> |
+            <strong>警惕虚假中奖信息</strong> |
+            <strong>小心假冒客服诈骗</strong> |
+            <strong>拒绝任何形式的付费解锁</strong> |
+            <strong>不要扫描不明二维码</strong></span
           >
         </div>
         <h1>视频解析播放器</h1>
@@ -383,7 +411,7 @@
           <input
             type="text"
             id="videoUrl"
-            placeholder="请输入视频地址"
+            placeholder="请粘贴视频地址(如果线路一的地址解析错误请直接输入片名)"
             required
             style="padding-right: 40px; width: 100%; box-sizing: border-box"
           />
