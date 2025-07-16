@@ -28,7 +28,7 @@
       }
 
       body {
-        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        font-family: "楷体", "KaiTi", serif;
         width: 100%;
         margin: 0;
         padding: 0;
@@ -36,8 +36,11 @@
         line-height: 1.6;
         display: grid;
         grid-template-columns: 300px 1fr 300px;
+        gap: 20px;
+        align-items: start;
         box-sizing: border-box;
         position: relative;
+        min-height: 100vh;
       }
       .sidebar {
         padding: 20px;
@@ -81,20 +84,30 @@
       .ad-warning {
         background: linear-gradient(90deg, #fff3cd 0%, #ffe8a1 100%);
         color: #856404;
-        padding: 12px 15px;
+        padding: 12px 0;
         border-radius: 8px;
         margin-bottom: 20px;
         border-left: 4px solid #ffc107;
-        overflow: hidden;
-        white-space: nowrap;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        text-align: center;
+        overflow: hidden;
+        position: relative;
       }
       .ad-warning span {
         display: inline-block;
-        padding-left: 100%;
-        animation: scrollText 15s linear infinite;
         font-weight: 500;
+        font-size: 18px;
+        white-space: nowrap;
+        animation: scrollText 25s linear infinite;
+        padding: 0 15px;
+      }
+
+      @keyframes scrollText {
+        from { transform: translateX(100%); }
+        to { transform: translateX(-100%); }
+      }
+      .ad-warning span strong {
+        color: #d63384;
+        font-weight: 700;
       }
       @media (prefers-reduced-motion: reduce) {
         .ad-warning span {
@@ -102,14 +115,7 @@
           padding-left: 0;
           display: block;
           text-align: center;
-        }
-      }
-      @keyframes scrollText {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-100%);
+          white-space: normal;
         }
       }
       .container {
@@ -126,11 +132,22 @@
         backdrop-filter: blur(5px);
       }
       h1 {
-        color: var(--primary);
         margin: 0 0 15px 0;
         font-weight: 700;
-        font-size: 2rem;
+        font-size: 40px;
         text-align: center;
+        font-family: "楷体", "KaiTi", serif;
+        background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: rainbow 8s ease infinite;
+      }
+      @keyframes rainbow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
       input,
       select {
@@ -288,9 +305,9 @@
         "
       >
         <p style="color: #856404; font-weight: 400; margin: 0">
-          <strong>手机端用户</strong
-          >请特别注意：线路2~9广告特别不友好，后期我也会更换更好的接口，现在建议只使用线路1或10！<br />
-          <strong>电脑端用户</strong>可使用全部线路(1-10)。
+          <strong>手机端用户:</strong
+          > <br>请特别注意，只能使用 <b style="color: #da500a;">线路1,2,10</b><br />
+          <strong>电脑端用户:</strong><br>可使用全部线路
         </p>
       </div>
     </div>
@@ -299,8 +316,9 @@
       <div class="container">
         <div class="ad-warning">
           <span
-            >⚠️ 请注意：视频中可能包含第三方广告，请勿轻信任何广告内容 |
-            请勿输入个人信息 | 请勿下载不明软件 | 请勿转账汇款</span
+            >⚠️ 请注意：视频中可能包含第三方广告，请勿轻信任何广告内容 | 
+            <strong>请勿输入个人信息</strong> | <strong>请勿下载不明软件</strong> | 
+            <strong>请勿转账汇款</strong></span
           >
         </div>
         <h1>视频解析播放器</h1>
@@ -319,24 +337,69 @@
               "img/title.gif?t=" + new Date().getTime();
           }, 9500);
         </script>
-        <input
-          type="text"
-          id="videoUrl"
-          placeholder="请输入视频地址"
-          required
-        />
+        <div style="position: relative; width: 100%;">
+          <input
+            type="text"
+            id="videoUrl"
+            placeholder="请输入视频地址"
+            required
+            style="padding-right: 40px; width: 100%; box-sizing: border-box;"
+          />
+          <button 
+            id="clearBtn" 
+            style="
+              position: absolute;
+              right: 10px;
+              top: 50%;
+              transform: translateY(-50%);
+              background: rgba(0,0,0,0.1);
+              border: none;
+              border-radius: 50%;
+              width: 24px;
+              height: 24px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              color: var(--danger);
+              font-size: 16px;
+              font-weight: bold;
+              transition: all 0.2s;
+            "
+            onclick="document.getElementById('videoUrl').value = ''"
+            title="清空输入"
+          >
+            ×
+          </button>
+        </div>
         <select id="parseLine">
-          <option value="1">线路1</option>
+          <option value="1">线路1(输入片名或地址)</option>
           <option value="2">线路2</option>
-          <option value="3">线路3</option>
-          <option value="4">线路4</option>
-          <option value="5">线路5</option>
-          <option value="6">线路6</option>
-          <option value="7">线路7</option>
-          <option value="8">线路8</option>
-          <option value="9">线路9</option>
-          <option value="10">线路10(全能)</option>
+          <option value="3" disabled>线路3(手机端不可用)</option>
+          <option value="4" disabled>线路4(手机端不可用)</option>
+          <option value="5" disabled>线路5(手机端不可用)</option>
+          <option value="6" disabled>线路6(手机端不可用)</option>
+          <option value="7" disabled>线路7(手机端不可用)</option>
+          <option value="8" disabled>线路8(手机端不可用)</option>
+          <option value="9" disabled>线路9(手机端不可用)</option>
+          <option value="10">线路10(手机端偶尔有广告)</option>
         </select>
+        <script>
+          // 检测设备类型并设置线路选项
+          function setLineOptions() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const parseLine = document.getElementById('parseLine');
+            
+            if (!isMobile) {
+              // 电脑端启用所有线路
+              Array.from(parseLine.options).forEach(option => {
+                option.disabled = false;
+              });
+            }
+          }
+          // 页面加载时设置线路选项
+          window.addEventListener('load', setLineOptions);
+        </script>
         <button id="playBtn" onclick="playVideo()">播放视频</button>
         <script>
           function playVideo() {
@@ -351,7 +414,7 @@
             // 修改线路1为直接调用z1.m1907.top接口（整合中转页面逻辑）
             const parseUrls = [
               "https://z1.m1907.top/?jx=", // 线路1：直接拼接接口，无需中转页面
-              "https://www.8090g.cn/?url=", // 其他线路保持不变
+              "https://jx.xmflv.cc/?url=", 
               "https://g.123456789.qpon/aa/aaa.php?url=",
               "https://jx.m3u8.tv/jiexi/?url=",
               "https://jx.m3u8.tv/jx/jx.php?url=",
@@ -371,7 +434,15 @@
               parseLine;
 
             // 解析失败的 fallback 逻辑（保持不变）
-            document.getElementById("videoFrame").onerror = function () {
+          // 清除按钮悬停效果
+          document.getElementById('clearBtn').addEventListener('mouseover', function() {
+            this.style.color = 'var(--danger)';
+          });
+          document.getElementById('clearBtn').addEventListener('mouseout', function() {
+            this.style.color = 'var(--gray)';
+          });
+
+          document.getElementById("videoFrame").onerror = function () {
               alert(`线路${parseLine}解析失败，正在尝试其他线路...`);
               let currentParser = 0;
               const tryNextParser = () => {
