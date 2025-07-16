@@ -262,24 +262,36 @@
       @media (max-width: 800px) {
         body {
           grid-template-columns: 1fr;
-          padding: 0 10px;
+          padding: 0;
         }
         .main-content {
           grid-column: 1;
+          padding: 10px;
         }
         .sidebar {
           width: 100%;
           max-width: 100%;
-          margin-bottom: 20px;
+          margin-bottom: 15px;
+          padding: 15px;
         }
         .container {
-          padding: 20px;
+          padding: 15px;
+          gap: 15px;
         }
         #videoContainer {
-          height: 350px;
+          height: calc(100vw * 0.6); /* 60% of viewport width */
+          margin: 0 -15px; /* Full width with negative margins */
+          width: calc(100% + 30px);
+          border-radius: 0;
         }
         h1 {
           font-size: 1.5rem;
+          margin-bottom: 10px;
+        }
+        .ad-warning {
+          margin: 0 -15px 15px -15px;
+          width: calc(100% + 30px);
+          border-radius: 0;
         }
       }
 
