@@ -414,10 +414,11 @@
           />
         </div>
         <script>
+          // GIF duration is ~15 seconds, refresh every 16 seconds to allow full play
           setInterval(function () {
             document.getElementById("bannerGif").src =
               "img/title.gif?t=" + new Date().getTime();
-          }, 9500);
+          }, 10000);
         </script>
         <div style="position: relative; width: 100%">
           <input
