@@ -267,7 +267,8 @@
         }
         .main-content {
           grid-column: 1;
-          padding: 10px;
+          padding: 0;
+          width: 100%;
         }
         .sidebar {
           width: 100%;
@@ -278,11 +279,13 @@
         .container {
           padding: 15px;
           gap: 15px;
+          width: 100%;
+          margin: 0;
         }
         #videoContainer {
           height: calc(100vw * 0.6); /* 60% of viewport width */
-          margin: 0 -15px; /* Full width with negative margins */
-          width: calc(100% + 30px);
+          margin: 0;
+          width: 100%;
           border-radius: 0;
         }
         h1 {
@@ -290,8 +293,8 @@
           margin-bottom: 10px;
         }
         .ad-warning {
-          margin: 0 -15px 15px -15px;
-          width: calc(100% + 30px);
+          margin: 0 0 15px 0;
+          width: 100%;
           border-radius: 0;
         }
       }
