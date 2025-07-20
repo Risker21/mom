@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../images/favicon.jpg">
+  <title>Momo同学详细页</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 颜色切换按钮 -->
+  <div class="color-toggle">
+    <i class="fas fa-palette"></i>
+  </div>
+
+  <!-- 粒子背景 -->
+  <div id="particles-js"></div>
+
+  <div class="loader">
+    <span>Mo</span>
+    <span>mo</span>
+    <span>同</span>
+    <span>学</span>
+    <span>欢</span>
+    <span>迎</span>
+    <span>你</span>
+    <span>的</span>
+    <span>到</span>
+    <span>来</span>
+
+  </div>
+
+  <div class="color-controls">
+    <div class="color-picker">
+      <label for="title-color">标题颜色:</label>
+      <input type="color" id="title-color" value="#f5f6fa">
+    </div>
+    <div class="color-picker">
+      <label for="text-color">正文颜色:</label>
+      <input type="color" id="text-color" value="rgba(255, 255, 255, 0.9)">
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- 浮动装饰元素 -->
+    <div class="floating-elements">
+      <div class="floating-circle circle-1"></div>
+      <div class="floating-circle circle-2"></div>
+      <div class="floating-circle circle-3"></div>
+    </div>
+
+    <!-- 头部区域 -->
+    <header class="profile-header">
+      <div class="profile-image">
+        <img src="./img/introduction.jpg" alt="Momo同学">
+      </div>
+      <div class="profile-info">
+        <h1>Momo同学</h1>
+        <p class="title">全栈工程师</p>
+        <div class="social-links">
+          <a href="https://github.com/Risker21" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="https://x.com/bobbob1571370"><img src="../images/R-C.png" alt="Twitter"
+              style="width:24px;height:24px;vertical-align:middle;border-radius: 50%;"></a>
+          <a href="../link/WeChat.html" target="_blank"><i class="fab fa-weixin"></i></a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main>
+      <!-- 关于我 -->
+      <section class="about-section">
+        <h2><i class="fas fa-user"></i> 关于我</h2>
+        <div class="about-grid">
+          <div class="about-item">
+            <h3>基本信息</h3>
+            <p><strong>性别:</strong> 男</p>
+            <p><strong>年龄:</strong> 23</p>
+            <p><strong>地区:</strong> 中国</p>
+          </div>
+          <div class="about-item">
+            <h3>技术社区</h3>
+            <p>CSDN博客作者</p>
+            <p>掘金活跃用户</p>
+            <p>github探索家</p>
+            <p>酷安数码爱好者</p>
+          </div>
+          <div class="about-item">
+            <h3>兴趣爱好</h3>
+            <p>编程学习</p>
+            <p>技术文章阅读</p>
+            <p>摄影、球类运动、骑行</p>
+          </div>
+        </div>
+        <div class="about-quote">
+          <span>用别人的歌单当人生BGM，</span>
+          <span>按社会给的剧本演自己，</span>
+          <span>就连热爱也成了对"钱途"渺茫的热爱，</span>
+          <span>那么我的生活已不再是生活</span>
+        </div>
+      </section>
+
+      <!-- 教育经历 -->
+      <section class="education-section">
+        <h2><i class="fas fa-graduation-cap"></i> 教育经历</h2>
+        <div class="education-grid">
+          <div class="education-card">
+            <div class="education-period">2023-2027</div>
+            <div class="education-content">
+              <h3>数据科学与大数据技术</h3>
+              <div class="courses-grid">
+                <div class="course-list">
+                  <h4>主修课程:</h4>
+                  <ul>
+                    <li>数据结构、算法分析</li>
+                    <li>数据库原理、计算机网络</li>
+                    <li>操作系统、编译原理</li>
+                    <li>Python数据分析与可视化</li>
+                    <li>面向对象程序设计</li>
+                    <li>Hadoop生态系统及开发</li>
+                    <li>JavaScript、JavaScript框架</li>
+                    <li>React、Vue.js</li>
+                  </ul>
+                </div>
+                <div class="course-list">
+                  <h4>辅修课程:</h4>
+                  <ul>
+                    <li>数学分析</li>
+                    <li>概率论</li>
+                    <li>线性代数</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 个人评价 -->
+      <section class="evaluation-section">
+        <h2><i class="fas fa-star"></i> 个人评价</h2>
+        <div class="evaluation-grid">
+          <div class="evaluation-card">
+            <i class="fas fa-laptop-code"></i>
+            <h3>技术能力</h3>
+            <p>对计算机科学有浓厚兴趣，掌握多种编程语言和框架</p>
+          </div>
+          <div class="evaluation-card">
+            <i class="fas fa-brain"></i>
+            <h3>学习能力</h3>
+            <p>学习能力强，能够快速掌握新技术并应用到项目中</p>
+          </div>
+          <div class="evaluation-card">
+            <i class="fas fa-code"></i>
+            <h3>代码质量</h3>
+            <p>注重代码质量和可维护性，遵循最佳实践</p>
+          </div>
+          <div class="evaluation-card">
+            <i class="fas fa-users"></i>
+            <h3>团队协作</h3>
+            <p>具备良好的团队协作能力和沟通技巧</p>
+          </div>
+          <div class="evaluation-card">
+            <i class="fas fa-lightbulb"></i>
+            <h3>技术视野</h3>
+            <p>持续关注技术发展趋势，定期学习新技术</p>
+          </div>
+          <div class="evaluation-card">
+            <i class="fas fa-puzzle-piece"></i>
+            <h3>问题解决</h3>
+            <p>对解决问题充满热情，喜欢接受挑战</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 经历 -->
+      <section class="experience-section">
+        <h2><i class="fas fa-briefcase"></i> 经历</h2>
+        <div class="experience-timeline">
+          <div class="experience-item">
+            <div class="experience-period">2023-2024</div>
+            <div class="experience-content">
+              <h3>初级工程师</h3>
+              <p class="company">学校学生</p>
+              <ul class="experience-details">
+                <li>学习面向对象的基本知识</li>
+                <li>学习Linux操作系统</li>
+                <li>制作学生登录系统</li>
+              </ul>
+            </div>
+          </div>
+          <div class="experience-item">
+            <div class="experience-period">2024-2025</div>
+            <div class="experience-content">
+              <h3>中级工程师</h3>
+              <p class="company">学校学生</p>
+              <ul class="experience-details">
+                <li>参与多个大型项目的前端开发</li>
+                <li>实现响应式设计和移动端适配</li>
+                <li>与后端团队协作完成接口对接</li>
+                <li>使用爬虫批量爬取数据</li>
+              </ul>
+            </div>
+          </div>
+          <div class="experience-item">
+            <div class="experience-period">2025~~~~~</div>
+            <div class="experience-content">
+              <h3>未来......</h3>
+              <p class="company">Be true to yourself</p>
+              <ul class="experience-details">
+                <li>愿自己有直面未知的勇气，像无畏的行者，在生活的旷野里踏出属于自己的路</li>
+                <li>把挫折当基石，将迷茫化星光，在逐梦途中，留存热爱与纯粹</li>
+                <li>让每一步成长都扎实，每一份坚持都闪光，活成眼里有光、心中有方向的模样，奔赴满是晴朗的远方 </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 项目展示 -->
+      <section class="projects-section">
+        <h2><i class="fas fa-project-diagram"></i> 项目展示</h2>
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-image">
+              <img src="./img/protect.jpg" alt="项目1">
+            </div>
+            <div class="project-info">
+              <h3>电商网站</h3>
+              <p>使用React和Node.js构建的功能电商平台</p>
+              <a href="./test.html" class="project-link" target="_blank">查看详情</a>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">
+              <img src="./img/protect.jpg" alt="项目2">
+            </div>
+            <div class="project-info">
+              <h3>数据分析仪表盘</h3>
+              <p>使用Vue.js和D3.js构建的数据可视化工具</p>
+              <a href="./test.html" class="project-link" target="_blank">查看详情</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 联系方式 -->
+      <section class="contact-section">
+        <h2><i class="fas fa-envelope"></i> 联系方式</h2>
+        <div class="contact-info">
+          <ul>
+            <li><i class="fas fa-envelope"></i> riskermo@gmail.com</li>
+            <li><i class="fas fa-map-marker-alt"></i> 中国，重庆</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="copyright-footer">
+      <p>© 2025 Momo的小破站</p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+  <script>
+    // 初始化GSAP动画
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 浮动元素动画
+    gsap.to(".circle-1", {
+      y: 30,
+      duration: 3,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    gsap.to(".circle-2", {
+      y: -40,
+      duration: 4,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    gsap.to(".circle-3", {
+      y: 50,
+      duration: 5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    // 突然出现/消失效果
+    gsap.utils.toArray("section").forEach((section, i) => {
+      gsap.set(section, { opacity: 0, y: 50 });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 80%",
+        onEnter: () => {
+          gsap.to(section, {
+            opacity: 1,
+            y: 0,
+            duration: 0.3,
+            ease: "steps(3)"
+          });
+        },
+        onLeaveBack: () => {
+          gsap.to(section, {
+            opacity: 0,
+            y: 50,
+            duration: 0.3,
+            ease: "steps(3)"
+          });
+        }
+      });
+    });
+
+    // 引用文本突然出现效果
+    gsap.utils.toArray(".about-quote span").forEach((span, i) => {
+      gsap.set(span, { opacity: 0, y: 20 });
+      gsap.to(span, {
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        delay: i * 0.2,
+        ease: "steps(3)"
+      });
+    });
+    // 粒子效果初始化
+    document.addEventListener('DOMContentLoaded', function () {
+      if (document.getElementById('particles-js')) {
+        particlesJS('particles-js', {
+          particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: "#00b376" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5, random: true },
+            size: { value: 3, random: true },
+            line_linked: { enable: true, distance: 150, color: "#00b376", opacity: 0.4, width: 1 },
+            move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+          },
+          interactivity: {
+            detect_on: "canvas",
+            events: {
+              onhover: { enable: true, mode: "repulse" },
+              onclick: { enable: true, mode: "push" }
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
