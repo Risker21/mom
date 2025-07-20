@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Momo的小破站" />
+    <meta name="keywords"
+        content="莫莫、momo同学、莫莫的小破站、个人作品集、创意网页设计、交互效果、3D展示、多媒体集成、响应式布局、粒子动画、浪漫故事、视频解析" />
+    <meta name="author" content="莫莫的小破站" />
+    <title>Momo的小破站</title>
+    <!--网站图标-->
+    <link rel="icon" type="image/png" href="images/favicon.jpg">
+    <!--网站图标-->
+    <!--主CSS文件(请勿删除) -->
+    <link rel="stylesheet" href="css/index.css">
+    <!--主CSS文件-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>
+</head>
+
+<body>
+    <!--包含所有div的容器-->
+    <div id="all">
+        <!--鼠标跟随效果-->
+        <div class="cursor"></div>
+        <!--鼠标跟随效果-->
+        <!--加载动画-->
+        <div id="loader">
+            <span class="color">嘻嘻嘻</span> <br>你来了
+        </div>
+        <!--加载动画结束-->
+        <!--链接过渡效果-->
+        <div id="breaker">
+        </div>
+        <div id="breaker-two">
+        </div>
+        <!--链接过渡效果-->
+        <!--主内容区-->
+        <!--全屏导航菜单-->
+        <div id="navigation-content">
+            <div class="navigation-close">
+                <span class="close-first"></span>
+                <span class="close-second"></span>
+            </div>
+            <div class="navigation-links">
+                <a href="#" data-text="HOME" id="home-link">首页</a>
+                <a href="#" data-text="ABOUT" id="about-link">关于</a>
+                <a href="#" data-text="PORTFOLIO" id="blog-link">项目</a>
+                <a href="#" data-text="BLOG" id="portfolio-link">博客</a>
+                <a href="#" data-text="CONTACT" id="contact-link">联系</a>
+            </div>
+        </div>
+        <!--全屏导航菜单结束-->
+        <!--首页内容-->
+        <!--菜单栏-->
+        <div id="navigation-bar">
+            <div class="menubar">
+                <span class="first-span"></span>
+                <span class="second-span"></span>
+                <span class="third-span"></span>
+            </div>
+        </div>
+        <!--菜单栏结束-->
+        <!--页眉区-->
+        <div id="header">
+            <div id="particles"></div>
+            <!--社交媒体链接-->
+            <div class="social-media-links">
+                <a href="https://v.douyin.com/JUnFQzxX924/ 9@1.com :1pm" target="_blank"><img src="./images/抖音.png"
+                        class="social-media" alt="douyin-logo"></a>
+                <a href="https://www.youtube.com/@Riskermo" target="_blank"><img src="images/youtube.png"
+                        class="social-media" alt="youtube-logo"></a>
+                <a href="https://x.com/bobbob1571370" target="_blank"><img src="images/推特.svg" class="social-media"
+                        alt="twitter-logo"></a>
+            </div>
+            <!--社交媒体链接结束-->
+            <div class="header-content">
+                <div class="header-content-box">
+                    <div class="firstline"><span class="color">Risker </span><span style="color: aqua;">Momo</span></div>
+                    <div class="secondline">
+                        <span class="txt-rotate color" data-period="1200" style="color: rgb(225, 74, 157);"
+                            data-rotate='[ "欢迎光临","每一次点击都是一份缘分","我们都在阴沟里，但仍有人仰望星空", " 没有耐心和耐力，就别怪现实太现实", "人没有什么是固有的，除了自以为是" ]'></span>
+                        <span class="slash">|</span>
+                    </div>
+                </div>
+            </div>
+            <!--页眉图片轮播-->
+            <div class="header-slider">
+                <div class="slider-images">
+                    <img src="images/图1.png" class="active">
+                    <img src="images/图2.png">
+                    <img src="images/图3.png">
+                    <img src="images/图4.png">
+                </div>
+            </div>
+            <!--页眉图片轮播结束-->
+        </div>
+        <!--Header End-->
+        <!--HomePage End-->
+        <!--Main-Section End-->
+        <!--关于我-->
+        <div id="about">
+            <div class="color-changer">
+                <div class="color-panel">
+                    <img src="images/gear.png" alt="">
+                </div>
+                <div class="color-selector">
+                    <div class="heading">自定义颜色</div>
+                    <div class="colors">
+                        <ul>
+                            <li>
+                                <a href="#0" class="color-red " title="color-red"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-purple" title="color-purple"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-malt" title="color-malt"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-green" title="color-green"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-blue" title="color-blue"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-orange" title="color-orange"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--关于我内容-->
+            <div id="about-content">
+                <div class="about-header">
+                    了解<span class="color">我</span>
+                    <span class="header-caption">我的信息<span class="color">都在这</span></span>
+                </div>
+                <div class="about-main">
+                    <div class="about-first-paragraph wow">
+                        <!--关于我描述-->
+                        <span class="about-first-line">
+                            我是一个
+                            <span class="color">对代码有着执着热爱</span>
+                            的学习者 </span>
+                        <br>
+                        <span class="about-second-line">从接触第一行"Hello World"开始，代码于我而言就不再是冰冷的字符，而是构建世界的魔法咒语。</span>
+                        <div class="cv">
+                            <a href="./link/self_introduction.html" target="_blank"><button>更多<span
+                                        class="colors"></span>信息</button></a>
+                        </div>
+                    </div>
+                    <!--关于我图片-->
+                    <div class="about-img">
+                        <img src="images/about.jpg" alt="Your Image">
+                    </div>
+                </div>
+
+            </div>
+            <!--服务内容开始-->
+            <div id="services">
+                <div class="color-changer">
+                    <div class="color-panel">
+                        <img src="images/gear.png" alt="">
+                    </div>
+                    <div class="color-selector">
+                        <div class="heading">自定义颜色</div>
+                        <div class="colors">
+                            <ul>
+                                <li>
+                                    <a href="#0" class="color-red " title="color-red"></a>
+                                </li>
+                                <li>
+                                    <a href="#0" class="color-purple" title="color-purple"></a>
+                                </li>
+                                <li>
+                                    <a href="#0" class="color-malt" title="color-malt"></a>
+                                </li>
+                                <li>
+                                    <a href="#0" class="color-green" title="color-green"></a>
+                                </li>
+                                <li>
+                                    <a href="#0" class="color-blue" title="color-blue"></a>
+                                </li>
+                                <li>
+                                    <a href="#0" class="color-orange" title="color-orange"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--服务标题-->
+                <div class="services-heading wow">
+                    <span class="color">网站</span>是干什么的？
+                </div>
+                <!--服务标题结束-->
+                <!--服务内容-->
+                <div class="services-content">
+                    <div class="service-one service wow">
+                        <div class="service-img">
+                            <img src="images/coding.png" alt="service-one">
+                        </div>
+                        <div class="service-description">
+                            <h2>有趣项目分享</h2>
+                            <p>通过搭建一个分享平台，展示各种有趣、好玩的编程项目。网站汇集了丰富的代码实例与实战技巧，适合编程爱好者学习、参考与交流，提升编程能力，激发创意灵感。</p>
+                        </div>
+                    </div>
+                    <div class="service-two service wow">
+                        <div class="service-img">
+                            <img src="images/instagram.png" alt="service-two">
+                        </div>
+                        <div class="service-description">
+                            <h2>各类模版分享</h2>
+                            <p>涵盖简历、PPT等多种常用模版，适用于求职、汇报、展示等场景。网站致力于分享高质量、实用性强的模版资源，帮助用户高效制作专业文档与演示内容，提升表达效果与个人竞争力。</p>
+                        </div>
+                    </div>
+                    <div class="service-three service wow">
+                        <div class="service-img">
+                            <img src="images/bulb.png" alt="service-three">
+                        </div>
+                        <div class="service-description">
+                            <h2>个人博客网站</h2>
+                            <p>本质为我本人的博客网站，旨在记录学习过程、分享编程经验与生活点滴。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--服务内容结束-->
+            <!--服务内容结束-->
+            <div id="skills">
+                <div class="skills-header">
+                    我<span class="color">的技能</span>
+                </div>
+                <div class="skills-content " style="text-align: center;">
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                HTML/CSS
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="html-progress wow">95%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                Javascript
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="js-progress wow">90%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                AE 剪映
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="adobe-progress wow">83%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                Python Java
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="php-progress wow">87%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                hadoop Linux
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="jquery-progress wow">94%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                MS Office
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="seo-progress wow">84%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--copyright-section You Can Remove After Downloading-->
+            <div class="footer">
+                <div class="footer-text">
+                    <img src="./images/copyright.png" alt="copyright-img" class="images" height="14px"> 2025 Momo的小破站
+                </div>
+            </div>
+            <!--copyright-section-->
+        </div>
+        <!--about end-->
+        <!--博客-->
+        <div id="portfolio">
+            <div class="color-changer">
+                <div class="color-panel">
+                    <img src="images/gear.png" alt="">
+                </div>
+                <div class="color-selector">
+                    <div class="heading">自定义颜色</div>
+                    <div class="colors">
+                        <ul>
+                            <li>
+                                <a href="#0" class="color-red " title="color-red"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-purple" title="color-purple"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-malt" title="color-malt"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-green" title="color-green"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-blue" title="color-blue"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-orange" title="color-orange"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="portfolio-header"> <span class="color">我的博客</span>
+                <span class="header-caption"> 生活的点滴都值得被记录 <span class="color">Blogs</span></span>
+            </div>
+            <div id="portfolio-content">
+                <div class="portfolio portfolio-first">
+                    <div class="portfolio-image">
+                        <img src="images/portfolio-first.jpg" alt="portfolio-first">
+                    </div>
+                    <div class="portfolio-text">
+                        <h2>科技日常</h2>
+                        <p>分享数码产品的实用技巧，拆解前沿技术的生活化应用，记录智能工具带来的小改变，让硬核科技融入日常，感受科技温度。</p>
+                        <div class="button"><a href="./link/test.html" target="_blank"><button><span class="index">进入专区<i
+                                            class="gg-arrow-right"></i></span></button></a></div>
+                    </div>
+                </div>
+                <div class="portfolio portfolio-second">
+                    <div class="portfolio-image">
+                        <img src="images/portfolio-second.jpg" alt="portfolio-second">
+                    </div>
+                    <div class="portfolio-text">
+                        <h2>思绪日常</h2>
+                        <p>记录那些一闪而过的念头：或许是清晨窗台的光影联想，深夜独处的情绪碎片，又或是对一件小事的深度琢磨，让零散思考有处安放</p>
+                        <div class="button"><a href="./link/test.html" target="_blank"><button><span class="index">进入专区<i
+                                            class="gg-arrow-right"></i></span></button></a></div>
+                    </div>
+                </div>
+
+                <div class="portfolio portfolio-third">
+                    <div class="portfolio-image">
+                        <img src="images/portfolio-third.jpg" alt="portfolio-third">
+                    </div>
+                    <div class="portfolio-text">
+                        <h2>行走日常</h2>
+                        <p>捕捉路上的细碎美好：街角咖啡馆的午后阳光，陌生城市的小巷烟火，公园长椅上的观察笔记，让脚步与风景碰撞出故事。</p>
+                        <div class="button"><a href="./link/test.html" target="_blank"><button><span class="index">进入专区<i
+                                            class="gg-arrow-right"></i></span></button></a></div>
+                    </div>
+                </div>
+                <div class="portfolio portfolio-fourth">
+                    <div class=" portfolio-image">
+                        <img src="images/portfolio-fourth.jpg" alt="portfolio-fourth">
+                    </div>
+                    <div class="portfolio-text">
+                        <h2>阅读日常</h2>
+                        <p>拆解文字里的万千世界：一本书的某句共鸣，不同观点的碰撞思考，甚至是读错段落的乌龙感悟，让阅读成为与自己对话的方式。</p>
+                        <div class="button"><a href="./link/test.html" target="_blank"><button><span class="index">进入专区<i
+                                            class="gg-arrow-right"></i></span></button></a></div>
+                    </div>
+                </div>
+            </div>
+            <!--copyright-section You Can Remove After Downloading-->
+            <div class="footer">
+                <div class="footer-text">
+                    <img src="./images/copyright.png" alt="copyright-img" class="images" height="14px"> 2025 Momo的小破站
+                </div>
+            </div>
+            <!--copyright-section-->
+        </div>
+        <!--作品集结束-->
+        <!--博客-->
+        <div id="blog">
+            <div class="color-changer">
+                <div class="color-panel">
+                    <img src="images/gear.png" alt="">
+                </div>
+                <div class="color-selector">
+                    <div class="heading">自定义颜色</div>
+                    <div class="colors">
+                        <ul>
+                            <li>
+                                <a href="#0" class="color-red " title="color-red"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-purple" title="color-purple"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-malt" title="color-malt"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-green" title="color-green"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-blue" title="color-blue"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-orange" title="color-orange"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="blog-header color"> 我的项目</span>
+                <span class="header-caption">百炼成钢 <span class="color"> Project</span></span>
+            </div>
+            <div class="blog-content">
+                <div class="blogs">
+                    <a href="./image_fancy/index.html" target="_blank">
+                        <div class="img">
+                            <img src="images/post-one.png" alt="blog-one">
+                            <div class="blog-date">浪漫</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>花式图片册</h3>
+                            <p> <strong style="color: #28bb68; font-size: 23px;">程序员浪漫起来有多可怕？</strong>
+                                <br>
+                                图片册有五种花式可以选择：<br>
+                                方形、球体、螺旋、立方体、爱心<br>
+                                支持自定义上传图片
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./lovestory/index.html" target="_blank">
+                        <div class="img">
+                            <img src="images/post-two.png" alt="blog-two">
+                            <div class="blog-date">浪漫</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>爱心纪念册</h3>
+                            <p><strong style="color: #28bb68; font-size: 23px;"> 故事结束了吗？</strong>
+                                <br>
+                                原来人生最大的错觉，是以为初见只是开场 <br>殊不知那已是巅峰！
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./travel_plane/index.html" target="_blank">
+                        <div class="img">
+                            <img src="images/post-three.png" alt="blog-three">
+                            <div class="blog-date">浪漫</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>穿越时空的旅行</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">世界这么大你不去看看？</strong><br>
+                                3 <br>
+                                2 <br>
+                                1 <br>
+                                go go go <br>
+                                出发了
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./video_and_audio/video.html" target="_blank">
+                        <div class="img">
+                            <img src="images/post-four.png" alt="blog-four">
+                            <div class="blog-date">实用</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>视频解析播放器</h3>
+                            <p><strong style="color: #28bb68; font-size: 23px;">喜欢追剧的你还在充VIP吗？</strong>
+                                <br>
+                                这里是追剧者的天堂，专为喜欢追剧的你打造！
+                                <br>无需充值VIP，即可解析各大平台视频地址，畅享高清无广告观看体验。
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./link/test.html" target="_blank">
+                        <div class="img">
+                            <img src="images/post-five.jpg" alt="blog-five">
+                            <div class="blog-date">闲置位</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>这里啥也没有</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">努力寻找灵感中</strong><br>
+                                世界那么大，偏偏是你穿过人海停在我面前，像一本翻到最合适章节的书，像迷路时偶然撞见的灯塔。
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./link/test.html" target="_blank">
+                        <div class="img">
+                            <img src="images/post-five.jpg" alt="blog-six">
+                            <div class="blog-date">闲置位</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>这里啥也没有</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">努力寻找灵感中</strong>
+                                <br>
+                                世界那么大，偏偏是你穿过人海停在我面前，像一本翻到最合适章节的书，像迷路时偶然撞见的灯塔。
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--copyright-section You Can Remove After Downloading-->
+            <div class="footer">
+                <div class="footer-text">
+                    <img src="./images/copyright.png" alt="copyright-img" class="images" height="14px"> 2025 Momo的小破站
+                </div>
+            </div>
+            <!--copyright-section-->
+        </div>
+        <!--博客结束-->
+        <!--联系我-->
+        <div id="contact">
+            <div class="color-changer">
+                <div class="color-panel">
+                    <img src="images/gear.png" alt="">
+                </div>
+                <div class="color-selector">
+                    <div class="heading">自定义颜色</div>
+                    <div class="colors">
+                        <ul>
+                            <li>
+                                <a href="#0" class="color-red " title="color-red"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-purple" title="color-purple"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-malt" title="color-malt"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-green" title="color-green"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-blue" title="color-blue"></a>
+                            </li>
+                            <li>
+                                <a href="#0" class="color-orange" title="color-orange"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-header">联系<span class="color">我</span>
+                <div class="contact-header-caption"> <span class="color"> Get</span> In Touch</div>
+            </div>
+            <div class="contact-content">
+                <!--联系表单-->
+                <div class="contact-form">
+                    <div class="form-header">
+                        建议
+                    </div>
+                    <form id="myForm" action="https://formsubmit.co/riskermo@gmail.com" method="POST">
+                        <input type="hidden" name="_subject" value="网站联系表单提交">
+                        <input type="hidden" name="_template" value="table">
+                        <div class="input-line">
+                            <input id="name" name="name" type="text" placeholder="姓名" class="input-name" required>
+                            <input id="email" name="email" type="email" placeholder="邮箱" class="input-name" required>
+                        </div>
+                        <input type="text" id="subject" name="subject" placeholder="主题" class="input-subject" required>
+                        <textarea id="body" name="body" class="input-textarea" placeholder="详细内容" required
+                            style="resize: none;"></textarea>
+                        <button type="submit" id="submit">提交</button>
+                    </form>
+                    <div id="success-message" style="display:none; margin-top:20px; color:green;">
+                        提交成功！感谢您的反馈。
+                    </div>
+
+                </div>
+                <!--联系表单-->
+                <!--联系信息-->
+                <div class="contact-info">
+                    <div class="contact-info-header">
+                        我的信息
+                    </div>
+                    <div class="contact-info-content">
+                        <div class="contect-info-content-line">
+                            <img src="./images/icon-name.png" class="icon" alt="name-icon">
+                            <div class="contact-info-icon-text">
+                                <h6>姓名</h6>
+                                <p>Momo同学</p>
+                            </div>
+                        </div>
+                        <div class="contect-info-content-line">
+                            <img src="./images/icon-location.png" class="icon" alt="location-icon">
+                            <div class="contact-info-icon-text">
+                                <h6>位置</h6>
+                                <p>中国，重庆</p>
+                            </div>
+                        </div>
+                        <div class="contect-info-content-line">
+                            <img src="./images/icon-phone.png" class="icon" alt="phone-icon">
+                            <div class="contact-info-icon-text">
+                                <h6>电话</h6>
+                                <p>无</p>
+                            </div>
+                        </div>
+
+                        <div class="contect-info-content-line">
+                            <img src="./images/icon-email.png" class="icon" alt="email-icon">
+                            <div class="contact-info-icon-text">
+                                <h6>邮箱</h6>
+                                <p>riskermo@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--联系信息结束-->
+                </div>
+            </div>
+            <!--copyright-section You Can Remove After Downloading-->
+            <div class="footer">
+                <div class="footer-text">
+                    <img src="./images/copyright.png" alt="copyright-img" class="images" height="14px"> 2025 Momo的小破站
+                </div>
+            </div>
+            <!--copyright-section-->
+        </div>
+        <!--联系我结束-->
+    </div>
+    <!--所有分区结束-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/particles.min.js"></script>
+    <script src="js/index.js"></script>
+    <!--粒子效果脚本-->
+    <script>
+        particlesJS("particles", { "particles": { "number": { "value": 40, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#ffffff" }, "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 }, "image": { "src": "img/github.svg", "width": 100, "height": 100 } }, "opacity": { "value": 0.5, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } }, "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } }, "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 400, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } } }, "retina_detect": true });
+    </script>
+    
+    <!--图片轮播脚本-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.header-slider img');
+            let currentIndex = 0;
+            
+            function showNextImage() {
+                // 隐藏当前图片
+                images[currentIndex].classList.remove('active');
+                
+                // 计算下一张图片索引
+                currentIndex = (currentIndex + 1) % images.length;
+                
+                // 显示下一张图片
+                images[currentIndex].classList.add('active');
+            }
+            
+            // 每3秒切换一次图片
+            setInterval(showNextImage, 3000);
+        });
+    </script>
+    <script type="text/javascript">
+        document.getElementById('myForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var form = this;
+            var submitBtn = document.getElementById('submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '发送中...';
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        form.reset();
+                        document.getElementById('success-message').style.display = 'block';
+                        submitBtn.textContent = '提交成功';
+                        setTimeout(function () {
+                            submitBtn.textContent = '提交';
+                            submitBtn.disabled = false;
+                        }, 3000);
+                    } else {
+                        throw new Error('提交失败');
+                    }
+                })
+                .catch(error => {
+                    submitBtn.textContent = '提交失败，请重试';
+                    submitBtn.disabled = false;
+                });
+        });
+    </script>
+</body>
+
+</html>
