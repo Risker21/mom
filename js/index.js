@@ -34,6 +34,7 @@ $(function(){
         this.loopNum = 0;
         this.period = parseInt(period, 10) || 2000;
         this.txt = '';
+        this.currentColor = '#3dd60fff'; // Initialize with default color
         this.tick();
         this.isDeleting = false;
       };
@@ -47,8 +48,15 @@ $(function(){
         } else {
           this.txt = fullTxt.substring(0, this.txt.length + 1);
         }
+
+        // Generate new random color at start of each loop
+        if (this.txt.length === 0) {
+          this.currentColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+          console.log('New color generated:', this.currentColor);
+        }
       
-        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+        this.el.innerHTML = '<span class="wrap" style="color:' + this.currentColor + '">'+this.txt+'</span>';
+        console.log('Current color:', this.currentColor); // Debug output
       
         var that = this;
         var delta = 200 - Math.random() * 100;
@@ -190,3 +198,76 @@ $(function(){
   $('.navigation-close').hover(cursorhover,cursor);
 
 })
+
+// 音频控制功能
+$(function() {
+  const audio = document.querySelector('audio');
+  const toggleBtn = document.getElementById('audio-toggle');
+  
+  // 初始状态
+  let isPlaying = false;
+  audio.autoplay = false; // 禁用自动播放
+  toggleBtn.src = "link/img/music_off.png"; // 初始显示暂停图标
+  
+  // 首次点击时开始播放
+  document.body.addEventListener('click', function firstClick() {
+    if (!isPlaying) {
+      audio.play().catch(e => {
+        console.log("Autoplay prevented:", e);
+        toggleBtn.src = "link/img/music_off.png";
+      });
+      toggleBtn.src = "link/img/music_on.png";
+      isPlaying = true;
+    }
+    document.body.removeEventListener('click', firstClick);
+  });
+  
+  // 切换播放/暂停
+  toggleBtn.addEventListener('click', function() {
+    // 添加点击动画
+    gsap.to(toggleBtn, {
+      scale: 0.8,
+      opacity: 0.7,
+      duration: 0.1,
+      onComplete: function() {
+        gsap.to(toggleBtn, {
+          scale: 1,
+          opacity: 1,
+          duration: 0.2
+        });
+      }
+    });
+
+    if (isPlaying) {
+      audio.pause();
+      toggleBtn.src = "link/img/music_off.png";
+    } else {
+      audio.play();
+      toggleBtn.src = "link/img/music_on.png";
+    }
+    isPlaying = !isPlaying;
+  });
+  
+  // 窗口焦点变化时暂停
+  window.addEventListener('blur', function() {
+    if (isPlaying) {
+      audio.pause();
+      toggleBtn.src = "link/img/music_off.png";
+      isPlaying = false;
+      localStorage.setItem('audioWasPlaying', 'true');
+    }
+  });
+  
+  // 窗口重新获得焦点时恢复播放
+  window.addEventListener('focus', function() {
+    if (!isPlaying && localStorage.getItem('audioWasPlaying') === 'true') {
+      audio.play().then(() => {
+        toggleBtn.src = "link/img/music_on.png";
+        isPlaying = true;
+        localStorage.removeItem('audioWasPlaying');
+      }).catch(e => {
+        console.log("Resume playback failed:", e);
+      });
+    }
+  });
+});
