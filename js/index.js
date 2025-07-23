@@ -206,7 +206,6 @@ $(function() {
   
   // 音乐列表
   const musicFiles = [
-
     'link/music/Anyone.mp3',
     'link/music/搁浅.mp3',
     'link/music/戒不掉.mp3',
@@ -217,8 +216,7 @@ $(function() {
     'link/music/I Really Want To Stay At Your House.mp3',
     'link/music/WE PRAY.mp3',
     'link/music/终生老友.mp3',
-    'link/music/是什么让我遇见这样的你.mp3',
-    
+    'link/music/是什么让我遇见这样的你.mp3'
   ];
   
   // 随机选择音乐
