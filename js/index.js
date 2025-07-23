@@ -204,10 +204,42 @@ $(function() {
   const audio = document.querySelector('audio');
   const toggleBtn = document.getElementById('audio-toggle');
   
+  // 音乐列表
+  const musicFiles = [
+
+    'link/music/Anyone.mp3',
+    'link/music/搁浅.mp3',
+    'link/music/戒不掉.mp3',
+    'link/music/柳叶笺.mp3',
+    'link/music/明天，你好.mp3',
+    'link/music/我记得.mp3',
+    'link/music/这世界那么多人.mp3',
+    'link/music/I Really Want To Stay At Your House.mp3',
+    'link/music/WE PRAY.mp3',
+    'link/music/终生老友.mp3',
+    'link/music/是什么让我遇见这样的你.mp3',
+    
+  ];
+  
+  // 随机选择音乐
+  function getRandomMusic() {
+    const randomIndex = Math.floor(Math.random() * musicFiles.length);
+    return musicFiles[randomIndex];
+  }
+  
   // 初始状态
   let isPlaying = false;
   audio.autoplay = false; // 禁用自动播放
   toggleBtn.src = "link/img/music_off.png"; // 初始显示暂停图标
+  audio.src = getRandomMusic(); // 设置初始随机音乐
+  
+  // 音乐结束事件
+  audio.addEventListener('ended', function() {
+    audio.src = getRandomMusic();
+    if (isPlaying) {
+      audio.play();
+    }
+  });
   
   // 首次点击时开始播放
   document.body.addEventListener('click', function firstClick() {
