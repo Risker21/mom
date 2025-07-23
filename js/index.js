@@ -213,10 +213,16 @@ $(function() {
     'link/music/明天，你好.mp3',
     'link/music/我记得.mp3',
     'link/music/这世界那么多人.mp3',
-    'link/music/I Really Want To Stay At Your House.mp3',
+    'link/music/I Really Want To Stay At Your House.mp3', 
     'link/music/WE PRAY.mp3',
     'link/music/终生老友.mp3',
-    'link/music/是什么让我遇见这样的你.mp3'
+    'link/music/是什么让我遇见这样的你.mp3',
+    'link/music/everglow.mp3',
+    'link/music/Trouble I’m in.mp3',
+    'link/music/鱼仔.mp3',
+    'link/music/无额.mp3',
+    'link/music/哪里都是你.mp3',
+    'link/music/every time we touch.mp3'
   ];
   
   // 随机选择音乐
