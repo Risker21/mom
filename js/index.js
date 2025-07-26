@@ -234,6 +234,8 @@ $(function() {
     "link/music/reach.mp3",
     "link/music/III.mp3",
     "link/music/家后.mp3",
+    "link/music/离开我的依赖.mp3",
+    "link/music/路过人间.mp3",
   ];
   
   // 随机选择音乐
