@@ -494,6 +494,8 @@
           <option value="8" disabled>线路8(手机端不可用)</option>
           <option value="9" disabled>线路9(手机端不可用)</option>
           <option value="10" disabled>线路10(手机端不可用)</option>
+          <option value="11">线路11(双解析地址)</option>
+          <option value="12">线路12(双解析地址)</option>
         </select>
         <script>
           // 检测设备类型并设置线路选项
@@ -543,15 +545,44 @@
               "https://www.ckplayer.vip/jiexi/?url=",
               "https://cp.123456789.qpon/jiexi.php?url=",
               "https://www.pouyun.com/?url=",
+              "https://jx.2s0.cn/player/analysis.php?v=", // 备用解析接口1
+              "https://jx.2s0.cn/player/?url=", // 备用解析接口2
+              "https://jx.77flv.cc/?url=", // 线路12解析地址1
+              "https://jx.nnxv.cn/tv.php?url=", // 线路12解析地址2
             ];
 
             // 直接调用对应线路的接口（线路1已整合中转逻辑）
             const selectedParser = parseInt(parseLine) - 1;
-            document.getElementById("videoFrame").src =
-              parseUrls[selectedParser] +
-              encodeURIComponent(videoUrl) +
-              "&line=" +
-              parseLine;
+            
+            // 特殊处理线路11，尝试两个解析地址
+            if (parseLine === "11") {
+              // 第一个解析地址
+              document.getElementById("videoFrame").src =
+                parseUrls[10] + encodeURIComponent(videoUrl) + "&line=11";
+              
+              // 如果第一个失败，尝试第二个
+              document.getElementById("videoFrame").onerror = function() {
+                document.getElementById("videoFrame").src =
+                  parseUrls[11] + encodeURIComponent(videoUrl) + "&line=11";
+              };
+            } else if (parseLine === "12") {
+              // 第一个解析地址
+              document.getElementById("videoFrame").src =
+                parseUrls[12] + encodeURIComponent(videoUrl) + "&line=12";
+              
+              // 如果第一个失败，尝试第二个
+              document.getElementById("videoFrame").onerror = function() {
+                document.getElementById("videoFrame").src =
+                  parseUrls[13] + encodeURIComponent(videoUrl) + "&line=12";
+              };
+            } else {
+              // 其他线路正常处理
+              document.getElementById("videoFrame").src =
+                parseUrls[selectedParser] +
+                encodeURIComponent(videoUrl) +
+                "&line=" +
+                parseLine;
+            }
 
             // 解析失败的 fallback 逻辑（保持不变）
             // 清除按钮悬停效果
