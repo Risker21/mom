@@ -558,6 +558,80 @@
             </svg>
           </span>
         </button>
+        <button id="cancelBtn" style="display:none; margin-left:10px; background:var(--danger)" onclick="cancelPlay()">取消解析</button>
+        <script>
+          let loadingTimeout;
+          let isParsing = false;
+          
+          function cancelPlay() {
+            if(isParsing) {
+              clearTimeout(loadingTimeout);
+              resetButtonState();
+            }
+          }
+          
+          function resetButtonState() {
+            const playBtn = document.getElementById("playBtn");
+            const btnText = document.getElementById("btnText");
+            const loadingSpinner = document.getElementById("loadingSpinner");
+            const cancelBtn = document.getElementById("cancelBtn");
+            
+            playBtn.disabled = false;
+            btnText.textContent = "解析播放";
+            loadingSpinner.style.display = "none";
+            cancelBtn.style.display = "none";
+            isParsing = false;
+          }
+        </script>
+        <style>
+          #playBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+          }
+          #loadingSpinner svg {
+            animation: rotate 2s linear infinite;
+          }
+          @keyframes rotate {
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        </style>
+            <svg width="20" height="20" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
+                  <stop stop-color="#fff" stop-opacity="0" offset="0%"/>
+                  <stop stop-color="#fff" stop-opacity=".631" offset="63.146%"/>
+                  <stop stop-color="#fff" offset="100%"/>
+                </linearGradient>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <g transform="translate(1 1)">
+                  <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite" />
+                  </path>
+                  <circle fill="#fff" cx="36" cy="18" r="1">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite" />
+                  </circle>
+                </g>
+              </g>
+            </svg>
+          </span>
+        </button>
         <style>
           #playBtn {
             display: flex;
@@ -589,8 +663,17 @@
 
             // 显示加载状态
             playBtn.disabled = true;
-            btnText.textContent = "正在解析中";
+            btnText.textContent = "正在解析中"; 
             loadingSpinner.style.display = "inline-block";
+            document.getElementById("cancelBtn").style.display = "inline-block";
+            isParsing = true;
+            
+            // 设置10秒超时
+            loadingTimeout = setTimeout(() => {
+              if(isParsing) {
+                resetButtonState();
+              }
+            }, 10000);
 
             // 修改线路1为直接调用z1.m1907.top接口（整合中转页面逻辑）
             const parseUrls = [
@@ -665,9 +748,8 @@
 
             document.getElementById("videoFrame").onerror = function () {
               // 恢复按钮状态
-              playBtn.disabled = false;
-              btnText.textContent = "解析播放";
-              loadingSpinner.style.display = "none";
+              resetButtonState();
+              clearTimeout(loadingTimeout);
               
               alert(`线路${parseLine}解析失败，正在尝试其他线路...`);
               let currentParser = 0;
