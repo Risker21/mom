@@ -375,7 +375,7 @@
           <b style="color: #720b77;font-size: 15px;">请勿相信,请勿点击!!!</b>
           <br />
           <strong style="font-size: 20px;">手机用户:</strong> <br />请特别注意,只能使用
-          <b style="color: #da500a">线路1,2</b><br />
+          <b style="color: #da500a">线路1,2,11,12</b><br />
           <strong style="font-size: 20px;">电脑用户:</strong><br />可使用全部线路
           <br />
           <strong style="font-size: 20px;">平板用户：<br></strong>暂未进行测试,请谨慎选择线路
@@ -485,7 +485,7 @@
         </div>
         <select id="parseLine">
           <option value="1">线路1(输入片名或地址)</option>
-          <option value="2">线路2(稳定)</option>
+          <option value="2">线路2</option>
           <option value="3" disabled>线路3(手机端不可用)</option>
           <option value="4" disabled>线路4(手机端不可用)</option>
           <option value="5" disabled>线路5(手机端不可用)</option>
@@ -508,9 +508,9 @@
             const parseLine = document.getElementById("parseLine");
 
             if (isMobile) {
-              // 手机端只能使用线路1和线路2
+              // 手机端可以使用线路1,2,11,12
               Array.from(parseLine.options).forEach((option) => {
-                option.disabled = option.value !== "1" && option.value !== "2";
+                option.disabled = !["1", "2", "11", "12"].includes(option.value);
               });
             } else {
               // 电脑端启用所有线路
@@ -522,16 +522,75 @@
           // 页面加载时设置线路选项
           window.addEventListener("load", setLineOptions);
         </script>
-        <button id="playBtn" onclick="playVideo()">播放视频</button>
+        <button id="playBtn" onclick="playVideo()">
+          <span id="btnText">解析播放</span>
+          <span id="loadingSpinner" style="display:none">
+            <svg width="20" height="20" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
+                  <stop stop-color="#fff" stop-opacity="0" offset="0%"/>
+                  <stop stop-color="#fff" stop-opacity=".631" offset="63.146%"/>
+                  <stop stop-color="#fff" offset="100%"/>
+                </linearGradient>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <g transform="translate(1 1)">
+                  <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite" />
+                  </path>
+                  <circle fill="#fff" cx="36" cy="18" r="1">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite" />
+                  </circle>
+                </g>
+              </g>
+            </svg>
+          </span>
+        </button>
+        <style>
+          #playBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+          }
+          #loadingSpinner svg {
+            animation: rotate 2s linear infinite;
+          }
+          @keyframes rotate {
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        </style>
         <script>
           function playVideo() {
             const videoUrl = document.getElementById("videoUrl").value;
             const parseLine = document.getElementById("parseLine").value;
+            const playBtn = document.getElementById("playBtn");
+            const btnText = document.getElementById("btnText");
+            const loadingSpinner = document.getElementById("loadingSpinner");
 
             if (!videoUrl) {
               alert("请输入视频地址");
               return;
             }
+
+            // 显示加载状态
+            playBtn.disabled = true;
+            btnText.textContent = "正在解析中";
+            loadingSpinner.style.display = "inline-block";
 
             // 修改线路1为直接调用z1.m1907.top接口（整合中转页面逻辑）
             const parseUrls = [
@@ -576,8 +635,15 @@
                   parseUrls[13] + encodeURIComponent(videoUrl) + "&line=12";
               };
             } else {
-              // 其他线路正常处理
-              document.getElementById("videoFrame").src =
+            // 其他线路正常处理
+            document.getElementById("videoFrame").onload = function() {
+              // 解析成功，恢复按钮状态
+              playBtn.disabled = false;
+              btnText.textContent = "解析播放";
+              loadingSpinner.style.display = "none";
+            };
+            
+            document.getElementById("videoFrame").src =
                 parseUrls[selectedParser] +
                 encodeURIComponent(videoUrl) +
                 "&line=" +
@@ -598,6 +664,11 @@
               });
 
             document.getElementById("videoFrame").onerror = function () {
+              // 恢复按钮状态
+              playBtn.disabled = false;
+              btnText.textContent = "解析播放";
+              loadingSpinner.style.display = "none";
+              
               alert(`线路${parseLine}解析失败，正在尝试其他线路...`);
               let currentParser = 0;
               const tryNextParser = () => {
@@ -606,11 +677,11 @@
                   return;
                 }
                 if (currentParser !== selectedParser) {
-                  document.getElementById("videoFrame").src =
-                    parseUrls[currentParser] +
-                    encodeURIComponent(videoUrl) +
-                    "&line=" +
-                    parseLine;
+            document.getElementById("videoFrame").src =
+                parseUrls[selectedParser] +
+                encodeURIComponent(videoUrl) +
+                "&line=" +
+                parseLine;
                 }
                 currentParser++;
               };
