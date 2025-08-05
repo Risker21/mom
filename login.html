@@ -291,19 +291,13 @@
                     document.getElementById('ipLoading').style.display = 'none';
                     document.getElementById('ipInfo').style.display = 'block';
                 } else {
-                    document.getElementById('ipInfo').style.display = 'block';
-                    document.getElementById('ipAddress').textContent = '获取失败';
-                    document.getElementById('location').textContent = '位置信息不可用';
-                    document.getElementById('isp').textContent = '未知运营商';
                     document.getElementById('ipLoading').style.display = 'none';
+                    document.getElementById('ipInfo').style.display = 'none';
                 }
             } catch (error) {
                 console.error('获取位置信息出错:', error);
-                document.getElementById('ipInfo').style.display = 'block';
-                document.getElementById('ipAddress').textContent = '获取失败';
-                document.getElementById('location').textContent = '位置信息不可用';
-                document.getElementById('isp').textContent = '未知运营商';
                 document.getElementById('ipLoading').style.display = 'none';
+                document.getElementById('ipInfo').style.display = 'none';
             }
         });
 
