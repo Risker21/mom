@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <script>
-    // 检查登录状态
-    if(!localStorage.getItem('isLoggedIn')) {
+    // 检查登录状态（使用sessionStorage）
+    if(!sessionStorage.getItem('isLoggedIn')) {
         window.location.href = 'login.html';
     }
 </script>
