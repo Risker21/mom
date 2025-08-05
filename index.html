@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<script>
+    // 检查登录状态
+    if(!localStorage.getItem('isLoggedIn')) {
+        window.location.href = 'login.html';
+    }
+</script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -825,3 +830,4 @@
 </body>
 
 </html>
+
