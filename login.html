@@ -310,10 +310,8 @@
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
                 
-                // 显示cookie同意提示
-                if (confirm('登录成功！是否同意使用cookie保存登录状态？')) {
-                    localStorage.setItem('isLoggedIn', 'true');
-                }
+                // 使用sessionStorage临时存储登录状态
+                sessionStorage.setItem('isLoggedIn', 'true');
                 window.location.href = 'index.html';
             } else {
                 document.getElementById('errorMessage').style.display = 'block';
