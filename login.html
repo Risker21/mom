@@ -234,24 +234,42 @@
         // 获取用户详细IP和地理位置信息
         async function getUserLocation() {
             try {
-                const response = await fetch('http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query&lang=zh-CN');
-                // 将ISP运营商名称转换为中文
-                const ispMap = {
-                    'China Telecom': '中国电信',
-                    'China Mobile': '中国移动', 
-                    'China Unicom': '中国联通',
-                    'China Netcom': '中国网通'
-                };
-                const data = await response.json();
-                if (data.status === 'success') {
+                // 尝试使用HTTPS的ipapi.co
+                const response1 = await fetch('https://ipapi.co/json/');
+                if (response1.ok) {
+                    const data = await response1.json();
                     return {
-                        ip: data.query,
-                        country: data.country,
-                        region: data.regionName,
+                        ip: data.ip,
+                        country: data.country_name,
+                        region: data.region,
                         city: data.city,
-                        isp: ispMap[data.isp] || data.isp,
-                        location: `${data.lat},${data.lon}`
+                        isp: data.org,
+                        location: `${data.latitude},${data.longitude}`
                     };
+                }
+                
+                // 备用方案：使用ip-api通过CORS代理
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                const apiUrl = 'http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query&lang=zh-CN';
+                const response2 = await fetch(proxyUrl + apiUrl);
+                if (response2.ok) {
+                    const data = await response2.json();
+                    const ispMap = {
+                        'China Telecom': '中国电信',
+                        'China Mobile': '中国移动', 
+                        'China Unicom': '中国联通',
+                        'China Netcom': '中国网通'
+                    };
+                    if (data.status === 'success') {
+                        return {
+                            ip: data.query,
+                            country: data.country,
+                            region: data.regionName,
+                            city: data.city,
+                            isp: ispMap[data.isp] || data.isp,
+                            location: `${data.lat},${data.lon}`
+                        };
+                    }
                 }
                 return null;
             } catch (error) {
