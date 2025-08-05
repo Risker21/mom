@@ -251,7 +251,14 @@
 
             // 默认用户名和密码
             if (username === 'Momo' && password === '5201314') {
-                localStorage.setItem('isLoggedIn', 'true');
+                // 清除表单输入
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                
+                // 显示cookie同意提示
+                if (confirm('登录成功！是否同意使用cookie保存登录状态？')) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                }
                 window.location.href = 'index.html';
             } else {
                 document.getElementById('errorMessage').style.display = 'block';
@@ -259,6 +266,5 @@
         });
     </script>
 </body>
-
 
 </html>
