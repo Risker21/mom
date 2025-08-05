@@ -217,66 +217,11 @@
             </div>
             <button type="submit">登 录</button>
             <div class="error-message" id="errorMessage">用户名或密码错误</div>
-            <div class="ip-info" id="ipInfo" style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 8px; font-size: 14px; color: #333; display: none;">
-                <h3 style="margin-bottom: 10px; color: var(--primary-color);">您的基本信息</h3>
-                <p><strong>IP地址:</strong> <span id="ipAddress" style="font-weight: bold;"></span></p>
-                <p><strong>位置:</strong> <span id="location" style="font-weight: bold;"></span></p>
-                <p><strong>运营商:</strong> <span id="isp" style="font-weight: bold;"></span></p>
-            </div>
-            <div id="ipLoading" style="margin-top: 20px; display: none;">
-                <p style="color: #666;">正在获取网络信息...</p>
-            </div>
         </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // 获取用户详细IP和地理位置信息
-        async function getUserLocation() {
-            try {
-                const response = await fetch('http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query&lang=zh-CN');
-                // 将ISP运营商名称转换为中文
-                const ispMap = {
-                    'China Telecom': '中国电信',
-                    'China Mobile': '中国移动', 
-                    'China Unicom': '中国联通',
-                    'China Netcom': '中国网通'
-                };
-                const data = await response.json();
-                if (data.status === 'success') {
-                    return {
-                        ip: data.query,
-                        country: data.country,
-                        region: data.regionName,
-                        city: data.city,
-                        isp: ispMap[data.isp] || data.isp,
-                        location: `${data.lat},${data.lon}`
-                    };
-                }
-                return null;
-            } catch (error) {
-                console.error('获取位置信息失败:', error);
-                return null;
-            }
-        }
-
-        // 页面加载时获取IP信息
-        document.addEventListener('DOMContentLoaded', async function() {
-            document.getElementById('ipLoading').style.display = 'block';
-            const locationInfo = await getUserLocation();
-            
-            if (locationInfo) {
-                document.getElementById('ipAddress').textContent = locationInfo.ip;
-                document.getElementById('location').textContent = `${locationInfo.country} ${locationInfo.region} ${locationInfo.city}`;
-                document.getElementById('isp').textContent = locationInfo.isp;
-                document.getElementById('ipLoading').style.display = 'none';
-                document.getElementById('ipInfo').style.display = 'block';
-                localStorage.setItem('userLocation', JSON.stringify(locationInfo));
-            } else {
-                document.getElementById('ipLoading').style.display = 'none';
-            }
-        });
-
         // 粒子背景效果
         particlesJS("particles-js", {
             particles: {
@@ -299,11 +244,11 @@
     </script>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            
+
             // 默认用户名和密码
             if (username === 'Momo' && password === '5201314') {
                 // 清除表单输入
@@ -317,7 +262,6 @@
                 window.location.href = 'index.html';
             } else {
                 document.getElementById('errorMessage').style.display = 'block';
-                document.getElementById('ipLoading').style.display = 'none';
             }
         });
     </script>
