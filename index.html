@@ -2,7 +2,7 @@
 <html lang="en">
 <script>
     // 检查登录状态（使用sessionStorage）
-    if(!sessionStorage.getItem('isLoggedIn')) {
+    if(sessionStorage.getItem('isAuthenticated') !== 'true') {
         window.location.href = 'login.html';
     }
 </script>
