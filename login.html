@@ -1,348 +1,186 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="zh-CN">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../images/favicon.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="all.min.css" />
-    <title>登录 - 莫莫的小破站</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #6c5ce7;
-            --secondary-color: #a29bfe;
-            --accent-color: #fd79a8;
-            --text-color: #2d3436;
-            --light-color: #f5f6fa;
-        }
+	<title>登录</title>
+	<!-- Meta tag Keywords -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Simple Signin Form Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements"
+	/>
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        .login-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 40px 50px;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .login-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(to bottom right,
-                    rgba(255, 255, 255, 0.1),
-                    rgba(255, 255, 255, 0));
-            transform: rotate(30deg);
-            z-index: -1;
-        }
-
-        .login-container h1 {
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            font-weight: 600;
-            font-size: 28px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .login-container h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 3px;
-            background: var(--accent-color);
-            border-radius: 3px;
-        }
-
-        .login-form {
-            margin-top: 30px;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .login-form input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            color: var(--text-color);
-            transition: all 0.3s ease;
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-
-        .login-form input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-            outline: none;
-        }
-
-        .login-form label {
-            position: absolute;
-            left: 20px;
-            top: 15px;
-            color: #999;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-
-        .login-form input:focus+label,
-        .login-form input:not(:placeholder-shown)+label {
-            top: -10px;
-            left: 10px;
-            font-size: 12px;
-            background-color: white;
-            padding: 0 5px;
-            color: var(--primary-color);
-        }
-
-        .login-form button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
-        }
-
-        .login-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.6);
-        }
-
-        .login-form button:active {
-            transform: translateY(0);
-        }
-
-        .error-message {
-            color: #e74c3c;
-            margin-top: 15px;
-            display: none;
-            font-size: 14px;
-            animation: shake 0.5s ease;
-        }
-
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            20%,
-            60% {
-                transform: translateX(-5px);
-            }
-
-            40%,
-            80% {
-                transform: translateX(5px);
-            }
-        }
-
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-    </style>
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<!-- Meta tag Keywords -->
+	<!-- css files -->
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+	<!-- Style-CSS -->
+	<link rel="stylesheet" href="css/font-awesome.css">
+	<!-- Font-Awesome-Icons-CSS -->
+	<!-- //css files -->
+	<!-- web-fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+	<!-- //web-fonts -->
 </head>
 
 <body>
-    <div class="particles" id="particles-js"></div>
-    <div class="login-container">
-        <h1>Momo的小破站</h1>
-        <form class="login-form" id="loginForm">
-            <div class="input-group">
-                <input type="text" id="username" placeholder=" " required>
-                <label for="username">用户名</label>
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" placeholder=" " required>
-                <label for="password">密码</label>
-            </div>
-            <button type="submit">登 录</button>
-            <div class="error-message" id="errorMessage">用户名或密码错误</div>
-            <div class="ip-info" id="ipInfo" style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 8px; font-size: 14px; color: #333; display: none;">
-                <h3 style="margin-bottom: 10px; color: var(--primary-color);">您的基本信息</h3>
-                <p><strong>IP地址:</strong> <span id="ipAddress" style="font-weight: bold;"></span></p>
-                <p><strong>位置:</strong> <span id="location" style="font-weight: bold;"></span></p>
-                <p><strong>运营商:</strong> <span id="isp" style="font-weight: bold;"></span></p>
-            </div>
-            <div id="ipLoading" style="margin-top: 20px; display: none;">
-                <p style="color: #666;">正在获取网络信息...</p>
-            </div>
-        </form>
-    </div>
+	<!--header-->
+	<div class="header-w3l">
+		<h1 id="runtime-display">
+			网站已成功运行: <span id="runtime-days">0</span>天 <span id="runtime-hours">0</span>小时 <span id="runtime-minutes">0</span>分钟 <span id="runtime-seconds">0</span>秒
+		</h1>
+	</div>
+	<script>
+		function updateRuntime() {
+			const startDate = new Date('2025-06-30T12:00:00');
+			const now = new Date();
+			const diff = now - startDate;
+			
+			const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+			const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+			const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+			
+			document.getElementById('runtime-days').textContent = days;
+			document.getElementById('runtime-hours').textContent = hours;
+			document.getElementById('runtime-minutes').textContent = minutes;
+			document.getElementById('runtime-seconds').textContent = seconds;
+		}
+		
+		updateRuntime();
+		setInterval(updateRuntime, 1000); // 每秒更新一次
+	</script>
+	<!--//header-->
+	<div class="main-content-agile">
+		<div class="sub-main-w3">
+<h2 id="loginTitle">你好呀</h2>
+			<form action="#" method="post">
+				<label>用户名</label>
+				<div class="pom-agile">
+					<span class="fa fa-user-o" aria-hidden="true"></span>
+					<input placeholder="请输入用户名" name="Name" class="user" type="text" required="">
+				</div>
+				<label>密码</label>
+				<div class="pom-agile">
+					<span class="fa fa-key" aria-hidden="true"></span>
+					<input placeholder="请输入密码" name="Password" class="pass" type="password" required="" id="passwordInput">
+					<span class="fa fa-eye" aria-hidden="true" id="togglePassword" style="cursor: pointer; margin-left: -25px;"></span>
+				</div>
+				<div class="sub-w3l">
+					<div class="sub-agile">
+						<input type="checkbox" id="brand1" value="">
+						<label for="brand1">
+							<span></span>保持登录状态</label>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="right-w3l">
+<input type="submit" value="登录" id="loginBtn">
+					<div class="loader" style="display:none;">
+						<div class="loader-circle"></div>
+						<div class="loader-circle"></div>
+						<div class="loader-circle"></div>
+					</div>
+				</div>
+<script>
+					const titleGreetings = [
+						"你好呀", 
+						"Здравствуйте", 
+						"こんにちは", 
+						"안녕하세요", 
+						"Bonjour", 
+						"Guten Tag", 
+						"السلام عليكم", 
+						"Habari"
+					];
+					
+					const loginTitle = document.getElementById('loginTitle');
+					let titleIndex = 0;
+					
+					function changeTitle() {
+						titleIndex = (titleIndex + 1) % titleGreetings.length;
+						loginTitle.textContent = titleGreetings[titleIndex];
+					}
+					
+					// 每2秒切换一次标题
+					setInterval(changeTitle, 2000);
+					
+const loginBtn = document.getElementById('loginBtn');
+loginBtn.value = "登录";
+					
+					document.querySelector('form').addEventListener('submit', function(e) {
+						e.preventDefault();
+						const submitBtn = this.querySelector('input[type="submit"]');
+						const loader = this.querySelector('.loader');
+						
+						submitBtn.style.display = 'none';
+						loader.style.display = 'flex';
+						
+					// 模拟登录过程
+					const usernameInput = document.querySelector('input[name="Name"]');
+					const passwordInput = document.getElementById('passwordInput');
+					
+					console.log('Username input:', usernameInput);
+					console.log('Password input:', passwordInput);
+					
+					const username = usernameInput ? usernameInput.value : '';
+					const password = passwordInput ? passwordInput.value : '';
+					
+					console.log('Actual username:', username, 'Actual password:', password);
+					
+					if(username.trim() === "Momo" && password.trim() === "5201314") {
+						console.log('Login successful, checking index.html');
+						fetch('./index.html')
+							.then(response => {
+								if(response.ok) {
+									console.log('index.html exists, redirecting');
+									sessionStorage.setItem('isAuthenticated', 'true');
+									window.location.href = window.location.pathname.replace('login.html', 'index.html');
+								} else {
+									console.error('index.html not found');
+									alert('错误：找不到index.html页面');
+								}
+							})
+							.catch(error => {
+								console.error('Error checking index.html:', error);
+								alert('错误：无法检查index.html是否存在');
+							});
+					} else {
+						console.log('Login failed - username:', username, 'password:', password);
+						submitBtn.style.display = 'block';
+						loader.style.display = 'none';
+						alert('用户名或密码错误！');
+					}
+				});
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        // 获取用户详细IP和地理位置信息
-        async function getUserLocation() {
-            try {
-                // 尝试使用HTTPS的ipapi.co
-                const response1 = await fetch('https://ipapi.co/json/');
-                if (response1.ok) {
-                    const data = await response1.json();
-                    return {
-                        ip: data.ip,
-                        country: data.country_name,
-                        region: data.region,
-                        city: data.city,
-                        isp: data.org,
-                        location: `${data.latitude},${data.longitude}`
-                    };
-                }
-                
-                // 备用方案：使用ip-api通过CORS代理
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                const apiUrl = 'http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query&lang=zh-CN';
-                const response2 = await fetch(proxyUrl + apiUrl);
-                if (response2.ok) {
-                    const data = await response2.json();
-                    const ispMap = {
-                        'China Telecom': '中国电信',
-                        'China Mobile': '中国移动', 
-                        'China Unicom': '中国联通',
-                        'China Netcom': '中国网通'
-                    };
-                    if (data.status === 'success') {
-                        return {
-                            ip: data.query,
-                            country: data.country,
-                            region: data.regionName,
-                            city: data.city,
-                            isp: ispMap[data.isp] || data.isp,
-                            location: `${data.lat},${data.lon}`
-                        };
-                    }
-                }
-                return null;
-            } catch (error) {
-                console.error('获取位置信息失败:', error);
-                return null;
-            }
-        }
-
-        // 页面加载时获取IP信息
-        document.addEventListener('DOMContentLoaded', async function() {
-            document.getElementById('ipLoading').style.display = 'block';
-            try {
-                const locationInfo = await getUserLocation();
-                
-                if (locationInfo) {
-                    document.getElementById('ipAddress').textContent = locationInfo.ip;
-                    document.getElementById('location').textContent = `${locationInfo.country} ${locationInfo.region} ${locationInfo.city}`;
-                    document.getElementById('isp').textContent = locationInfo.isp;
-                    document.getElementById('ipLoading').style.display = 'none';
-                    document.getElementById('ipInfo').style.display = 'block';
-                } else {
-                    document.getElementById('ipLoading').style.display = 'none';
-                    document.getElementById('ipInfo').style.display = 'none';
-                }
-            } catch (error) {
-                console.error('获取位置信息出错:', error);
-                document.getElementById('ipLoading').style.display = 'none';
-                document.getElementById('ipInfo').style.display = 'none';
-            }
-        });
-
-        // 粒子背景效果
-        particlesJS("particles-js", {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: "#ffffff" },
-                shape: { type: "circle" },
-                opacity: { value: 0.5, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 3, direction: "none", random: true, straight: false, out_mode: "out" }
-            },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: { enable: true, mode: "repulse" },
-                    onclick: { enable: true, mode: "push" }
-                }
-            }
-        });
-    </script>
-
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // 默认用户名和密码
-            if (username === 'Momo' && password === '5201314') {
-                // 清除表单输入
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
-                
-                // 使用sessionStorage临时存储登录状态
-                sessionStorage.setItem('isLoggedIn', 'true');
-                window.location.href = 'index.html';
-            } else {
-                document.getElementById('errorMessage').style.display = 'block';
-                document.getElementById('ipLoading').style.display = 'none';
-            }
-        });
-    </script>
+				// 密码显示/隐藏切换
+				const togglePassword = document.getElementById('togglePassword');
+				const passwordInput = document.getElementById('passwordInput');
+				
+				togglePassword.addEventListener('click', function() {
+					const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+					passwordInput.setAttribute('type', type);
+					this.classList.toggle('fa-eye');
+					this.classList.toggle('fa-eye-slash');
+				});
+				</script>
+			</form>
+		</div>
+	</div>
+	<!--//main-->
+	<!--footer-->
+	<div class="footer">
+		<p>&copy; 2025 Momo的小破站 版权所有 | <a target="_blank" href="https://github.com/Risker21" title="github个人页">Momo同学</a>
+		</p>
+	</div>
+	<!--//footer-->
 </body>
 
 </html>
