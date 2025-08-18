@@ -2,8 +2,12 @@
 <html lang="en">
 <script>
     // 检查登录状态（使用sessionStorage）
-    if(sessionStorage.getItem('isAuthenticated') !== 'true') {
-        window.location.href = 'login.html';
+    // 允许游客访问，但保留登录状态识别
+    const isGuest = window.location.search.includes('guest=true');
+    if(isGuest) {
+        sessionStorage.setItem('isGuest', 'true');
+    } else if(sessionStorage.getItem('isAuthenticated') !== 'true') {
+        sessionStorage.removeItem('isGuest');
     }
 </script>
 <head>
@@ -15,7 +19,7 @@
     <meta name="author" content="莫莫" />
     <meta name="robots" content="index, follow" />
     <meta property="og:title" content="莫莫的创意前端小站" />
-    <meta property="og:description" content="展示HTML5/CSS3/JavaScript创意作品的前端技术实践" />
+    <meta property="og:description" content="展示HTML5/CSS3/JavaScrip" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://yourdomain.com" />
     <meta property="og:image" content="https://yourdomain.com/images/thumbnail.PNG" />
