@@ -8,6 +8,8 @@
         sessionStorage.setItem('isGuest', 'true');
     } else if(sessionStorage.getItem('isAuthenticated') !== 'true') {
         sessionStorage.removeItem('isGuest');
+                // 未登录且非游客访问，跳转到登录页
+        window.location.href = 'login.html';
     }
 </script>
 <head>
@@ -837,4 +839,5 @@
 </body>
 
 </html>
+
 
