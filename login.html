@@ -34,111 +34,115 @@
 </head>
 
 <body>
-    <div class="video-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; margin: 0; padding: 0;">
-        <video id="bgVideo1" autoplay muted loop style="width: 100vw; height: 100vh; object-fit: cover; position: absolute;">
+    <div class="video-background">
+        <video id="bgVideo1" autoplay muted loop playsinline>
             <source src="audio/login1.mp4" type="video/mp4">
         </video>
-        <video id="bgVideo2" autoplay muted loop style="display:none; width: 100vw; height: 100vh; object-fit: cover; position: absolute;">
+        <video id="bgVideo2" autoplay muted loop playsinline style="display:none;">
             <source src="audio/login2.mp4" type="video/mp4">
         </video>
     </div>
-    <style>
-        @media (max-aspect-ratio: 16/9) {
-            .video-background video {
-                width: auto;
-                height: 100%;
-            }
-        }
-        @media (min-aspect-ratio: 16/9) {
-            .video-background video {
-                width: 100%;
-                height: auto;
-            }
-        }
-    </style>
     <audio id="bgMusic" loop autoplay>
         <source src="audio/login.mp3" type="audio/mp3">
     </audio>
     <script>
-        // 自动播放背景音乐
+        // 极简版媒体初始化 - 针对微信和移动端深度优化
         function initMedia() {
             const bgMusic = document.getElementById('bgMusic');
-            bgMusic.volume = 0.5;
+            bgMusic.volume = 0.3; // 降低音量，减少干扰
             
-            // 更激进的自动播放策略
-            function ensurePlayback() {
-                // 先静音播放确保能立即播放
-                bgMusic.muted = true;
-                
-                // 尝试直接播放
-                const playPromise = bgMusic.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        console.log('背景音乐静音播放成功');
-                        
-                        // 立即尝试取消静音（不等待load事件）
+            // 检测环境
+            const isWeChatMobile = /MicroMessenger/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent);
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+        // 所有环境下都播放音乐，不禁用
+        function tryPlayMusic() {
+            bgMusic.muted = true;
+            const playPromise = bgMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log('背景音乐播放成功');
+                    setTimeout(() => {
                         bgMusic.muted = false;
-                        
-                        // 添加触摸/点击事件监听器作为备用
-                        const events = ['click', 'touchstart', 'keydown'];
-                        const unmuteHandler = function() {
-                            bgMusic.muted = false;
-                            events.forEach(evt => {
-                                document.removeEventListener(evt, unmuteHandler);
-                            });
-                        };
-                        
-                        events.forEach(evt => {
-                            document.addEventListener(evt, unmuteHandler, { once: true });
-                        });
-                        
-                    }).catch(e => {
-                        console.error('背景音乐播放失败:', e);
-                        
-                        // 如果失败，添加交互后播放的监听
-                        const playHandler = function() {
-                            bgMusic.play().then(() => {
-                                bgMusic.muted = false;
-                            });
-                            events.forEach(evt => {
-                                document.removeEventListener(evt, playHandler);
-                            });
-                        };
-                        
-                        const events = ['click', 'touchstart', 'keydown'];
-                        events.forEach(evt => {
-                            document.addEventListener(evt, playHandler, { once: true });
-                        });
-                    });
-                }
+                    }, 500);
+                }).catch(e => {
+                    console.log('音乐自动播放受限，等待用户交互');
+                });
             }
-            
-            // 立即尝试播放
-            ensurePlayback();
-            
-            // 添加周期性检查，确保音乐在播放
-            setInterval(() => {
-                if (bgMusic.paused) {
-                    console.log('检测到音乐暂停，尝试重新播放');
-                    ensurePlayback();
-                }
-            }, 3000);
-            
-            // 页面可见性变化时处理
-            document.addEventListener('visibilitychange', function() {
-                if (!document.hidden) {
-                    ensurePlayback();
-                }
+        }
+        
+        tryPlayMusic();
+        
+        // 用户交互后播放音乐
+        const playOnInteraction = function() {
+            bgMusic.play().then(() => {
+                bgMusic.muted = false;
             });
+            document.removeEventListener('click', playOnInteraction);
+            document.removeEventListener('touchstart', playOnInteraction);
+        };
+        
+        document.addEventListener('click', playOnInteraction, { once: true });
+        document.addEventListener('touchstart', playOnInteraction, { once: true });
             
             // 初始化视频播放
             initVideoPlayer();
         }
 
-        // 页面加载完成后初始化媒体
+        // 视频预加载函数 - 微信环境优化
+        function preloadVideos() {
+            const video1 = document.getElementById('bgVideo1');
+            const video2 = document.getElementById('bgVideo2');
+            
+            // 微信环境下只预加载一个视频
+            const isWeChatMobile = /MicroMessenger/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent);
+            
+            if (isWeChatMobile) {
+                video2.style.display = 'none';
+                video2.removeAttribute('src');
+                console.log('微信环境：只预加载一个视频以减少资源占用');
+            }
+            
+            // 视频加载事件监听
+            video1.addEventListener('loadeddata', function() {
+                console.log('视频1加载完成');
+                this.classList.add('loaded');
+            });
+            
+            video1.addEventListener('error', function() {
+                console.error('视频1加载失败');
+                document.querySelector('.video-background').classList.add('video-error');
+            });
+            
+            video2.addEventListener('loadeddata', function() {
+                console.log('视频2加载完成');
+                this.classList.add('loaded');
+            });
+            
+            video2.addEventListener('error', function() {
+                console.error('视频2加载失败');
+            });
+            
+            // 设置预加载属性
+            video1.preload = 'auto';
+            video2.preload = isWeChatMobile ? 'none' : 'auto';
+        }
+
+        // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
-            initMedia();
+            // 微信环境下延迟加载，避免卡顿
+            const isWeChatMobile = /MicroMessenger/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent);
+            
+            if (isWeChatMobile) {
+                setTimeout(() => {
+                    preloadVideos();
+                    initMedia();
+                }, 500); // 延迟500ms加载，让页面先渲染
+            } else {
+                preloadVideos();
+                initMedia();
+            }
         });
     </script>
     <!--header-->
@@ -332,163 +336,114 @@
             document.querySelector('.main-content-agile').style.display = 'block';
         });
 
-        // 视频顺序循环播放控制
+        // 极简视频播放控制 - 针对微信和移动端优化
         function initVideoPlayer() {
             const video1 = document.getElementById('bgVideo1');
             const video2 = document.getElementById('bgVideo2');
             
-            // 检测是否为移动设备或微信
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            // 检测是否为微信环境
             const isWeChatMobile = /MicroMessenger/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent);
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            // 检测视频是否可播放
-            function checkVideoPlayable(video, callback) {
-                video.addEventListener('error', () => {
-                    console.log('视频加载失败');
-                    callback(false);
-                });
+            // 微信和移动端特殊处理：只使用一个视频，避免复杂切换
+            if (isWeChatMobile || isMobile) {
+                console.log('微信/移动端环境：使用简化视频播放方案');
                 
-                video.addEventListener('canplay', () => {
-                    console.log('视频可以播放');
-                    callback(true);
-                });
+                // 隐藏第二个视频，只使用第一个视频
+                video2.style.display = 'none';
+                video1.style.display = 'block';
                 
-                // 设置超时检测
-                setTimeout(() => {
-                    if (video.readyState < 3) { // HAVE_FUTURE_DATA
-                        console.log('视频加载超时');
-                        callback(false);
+                // 确保playsinline属性
+                video1.setAttribute('playsinline', '');
+                video1.setAttribute('webkit-playsinline', '');
+                
+                // 极简播放逻辑
+                function tryPlayVideo(video) {
+                    video.muted = true;
+                    const playPromise = video.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            console.log('视频播放成功');
+                            // 延迟取消静音
+                            setTimeout(() => {
+                                video.muted = false;
+                            }, 500);
+                        }).catch(e => {
+                            console.log('视频自动播放受限');
+                        });
                     }
-                }, 3000);
-            }
-
-            if (isMobile || isWeChatMobile) {
-                // 移动设备或微信移动端，先尝试播放视频
-                const video1 = document.getElementById('bgVideo1');
-                const video2 = document.getElementById('bgVideo2');
-                
-                // 调整视频尺寸适应移动设备
-                video1.style.width = 'auto';
-                video1.style.height = '100%';
-                video2.style.width = 'auto';
-                video2.style.height = '100%';
-                
-                // 检测视频是否可播放
-                function checkVideoPlayable(video, callback) {
-                    video.addEventListener('error', () => {
-                        console.log('视频加载失败');
-                        callback(false);
-                    });
-                    
-                    video.addEventListener('canplay', () => {
-                        console.log('视频可以播放');
-                        callback(true);
-                    });
-                    
-                    // 设置超时检测
-                    setTimeout(() => {
-                        if (video.readyState < 3) { // HAVE_FUTURE_DATA
-                            console.log('视频加载超时');
-                            callback(false);
-                        }
-                    }, 3000);
                 }
-
-                checkVideoPlayable(video1, (canPlay) => {
-                    if (!canPlay) {
-                        console.log('移动端视频无法播放，切换到图片背景');
-                        const videoContainer = document.querySelector('.video-background');
-                        videoContainer.innerHTML = '';
-                        const bgImage = document.createElement('div');
-                        bgImage.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url(images/图55.jpg) center/cover no-repeat;';
-                        videoContainer.appendChild(bgImage);
-                    } else {
-                        // 视频可以播放，开始播放
-                        video1.style.display = 'block';
-                        video2.style.display = 'none';
-                        playCurrentVideo(video1, video2);
-                    }
-                });
+                
+                // 立即尝试播放
+                tryPlayVideo(video1);
+                
+                // 添加用户交互后播放的监听
+                const playOnInteraction = function() {
+                    video1.play().then(() => {
+                        video1.muted = false;
+                    });
+                    document.removeEventListener('click', playOnInteraction);
+                    document.removeEventListener('touchstart', playOnInteraction);
+                };
+                
+                document.addEventListener('click', playOnInteraction, { once: true });
+                document.addEventListener('touchstart', playOnInteraction, { once: true });
+                
                 return;
             }
 
-            // 检测视频1是否可播放
-            checkVideoPlayable(video1, (canPlay) => {
-                if (!canPlay) {
-                    console.log('主视频加载失败，切换到图片背景');
-                    const videoContainer = document.querySelector('.video-background');
-                    videoContainer.innerHTML = '';
-                    const bgImage = document.createElement('div');
-                    bgImage.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url(images/图55.jpg) center/cover no-repeat;';
-                    videoContainer.appendChild(bgImage);
-                    return;
-                }
-            });
-
-            // 初始化视频状态
+            // 桌面端：使用简单的视频循环
             video1.style.display = 'block';
             video2.style.display = 'none';
+            
+            // 视频结束自动循环
+            video1.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+            });
+            
+            // 确保视频播放
+            video1.play().catch(e => {
+                console.log('桌面端视频播放需要用户交互');
+            });
+        }
 
-            // 播放当前视频并设置下一个视频
-            function playCurrentVideo(currentVideo, nextVideo) {
-                console.log(`准备播放 ${currentVideo.id}`);
-                currentVideo.currentTime = 0;
+        // 性能优化：减少不必要的JavaScript操作
+        function optimizePerformance() {
+            // 微信和移动端环境下，减少动画和复杂效果
+            const isWeChatMobile = /MicroMessenger/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent);
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isWeChatMobile || isMobile) {
+                console.log('移动端性能优化：减少动画效果');
                 
-                // 先移除所有事件监听器
-                currentVideo.removeEventListener('ended', currentVideo._onEndHandler);
-                currentVideo.removeEventListener('timeupdate', currentVideo._onTimeUpdate);
-                
-                // 定义ended事件处理函数
-                currentVideo._onEndHandler = function onEnd() {
-                    console.log(`${currentVideo.id} 播放结束(ended事件触发)`);
-                    switchVideos(currentVideo, nextVideo);
-                };
-                
-                // 定义timeupdate事件处理函数作为备用
-                currentVideo._onTimeUpdate = function onTimeUpdate() {
-                    // 检查是否接近视频结束(最后0.5秒)
-                    if (currentVideo.currentTime > currentVideo.duration - 0.5 && currentVideo.duration > 0) {
-                        console.log(`${currentVideo.id} 接近结束，准备切换`);
-                        switchVideos(currentVideo, nextVideo);
+                // 减少标题切换频率
+                const titleInterval = setInterval(function() {
+                    const loginTitle = document.getElementById('loginTitle');
+                    if (loginTitle) {
+                        clearInterval(titleInterval);
+                        const titleGreetings = ["你好呀"];
+                        loginTitle.textContent = titleGreetings[0];
                     }
-                };
+                }, 100);
                 
-                // 添加事件监听
-                currentVideo.addEventListener('ended', currentVideo._onEndHandler);
-                currentVideo.addEventListener('timeupdate', currentVideo._onTimeUpdate);
-                
-                // 尝试播放
-                const playPromise = currentVideo.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        console.log(`${currentVideo.id} 开始播放`);
-                        // 检查视频元数据
-                        if (currentVideo.readyState >= 1) {
-                            console.log(`${currentVideo.id} 时长: ${currentVideo.duration}s`);
-                        } else {
-                            currentVideo.addEventListener('loadedmetadata', () => {
-                                console.log(`${currentVideo.id} 加载元数据完成，时长: ${currentVideo.duration}s`);
-                            }, {once: true});
-                        }
-                    }).catch(e => {
-                        console.error(`${currentVideo.id} 播放失败:`, e);
-                        switchVideos(currentVideo, nextVideo);
-                    });
+                // 简化按钮动画
+                const showLoginBtn = document.getElementById('showLoginBtn');
+                if (showLoginBtn) {
+                    showLoginBtn.style.animation = 'none';
                 }
             }
-            
-            // 切换视频函数
-            function switchVideos(currentVideo, nextVideo) {
-                console.log(`正在从 ${currentVideo.id} 切换到 ${nextVideo.id}`);
-                currentVideo.style.display = 'none';
-                nextVideo.style.display = 'block';
-                playCurrentVideo(nextVideo, currentVideo);
-            }
-
-            // 开始播放第一个视频
-            playCurrentVideo(video1, video2);
         }
+
+        // 页面加载完成后初始化媒体
+        document.addEventListener('DOMContentLoaded', function() {
+            // 预加载视频资源
+            preloadVideos();
+            // 性能优化
+            optimizePerformance();
+            initMedia();
+        });
     </script>
 <script>
 // 清除表单函数
@@ -536,4 +491,3 @@ document.querySelector('form').addEventListener('submit', function(e) {
 </script>
 </body>
 </html>
-
