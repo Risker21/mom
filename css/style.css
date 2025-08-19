@@ -34,62 +34,125 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
     overflow: hidden;
 }
 
 .video-background video {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
     object-fit: cover;
     z-index: -1;
 }
 
-/* 针对移动设备优化 */
+/* 移动端优化 - 确保视频始终填满屏幕 */
+@media (max-width: 768px), (orientation: portrait) {
+    .video-background video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+/* 微信内嵌浏览器特殊优化 */
 @media (max-width: 768px) {
-    .video-background video {
+    .video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: auto;
-    }
-}
-
-/* 针对竖屏设备优化 */
-@media (orientation: portrait) {
-    .video-background video {
-        width: auto;
         height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
     }
-}
-
-/* 针对横屏设备优化 */
-@media (orientation: landscape) {
+    
     .video-background video {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: auto;
-    }
-}
-
-/* 针对超宽屏优化 */
-@media (min-aspect-ratio: 21/9) {
-    .video-background video {
-        width: 100%;
-        height: auto;
-    }
-}
-
-/* 针对超高屏优化 */
-@media (max-aspect-ratio: 9/16) {
-    .video-background video {
-        width: auto;
         height: 100%;
+        object-fit: cover;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-perspective: 1000;
+        perspective: 1000;
     }
+}
+
+/* 针对微信iOS的特殊优化 */
+@media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+    .video-background video {
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+    }
+}
+
+/* 防止视频加载失败时的备用方案 - 增强版 */
+.video-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    z-index: -2;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.video-background.video-error::before {
+    opacity: 1;
+}
+
+/* 视频加载指示器 */
+.video-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    z-index: 10;
+    background: rgba(0,0,0,0.7);
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: none;
+}
+
+.video-background.loading .video-loading {
+    display: block;
+}
+
+/* 防止视频加载失败时的备用方案 */
+.video-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    z-index: -2;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.video-background.video-error::before {
+    opacity: 1;
 }
 /*--header--*/
 .header-w3l {
@@ -125,14 +188,28 @@ body {
     -moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.8);
     box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.8);
     padding: 2em;
-    background: #f8f9fa url(../images/图56.jpg) no-repeat center center !important;
+    background: url(../images/图56.jpg) center/cover no-repeat !important;
     background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 15px;
     border: 1px solid #dee2e6;
     transition: all 0.5s ease;
     overflow: auto;
     max-height: 90vh;
     z-index: 1000;  /* 提高z-index确保在最上层 */
+}
+
+.sub-main-w3::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.3); /* 白色半透明覆盖层，降低背景图透明度 */
+    border-radius: 15px;
+    z-index: -1;
 }
 .sub-main-w3:hover {
     box-shadow: 0px 10px 30px rgba(0,0,0,0.9);
@@ -370,6 +447,25 @@ span.fa {
 }
 /*--//placeholder-color--*/
 /*--//main--*/
+
+/* 登录表单容器样式 - 确保在所有屏幕尺寸下居中 */
+.main-content-agile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
 /*--footer--*/
 .footer p {
     font-size: .9em;
@@ -527,8 +623,7 @@ span.fa {
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 1.5em;
-        background: #f8f9fa url(../images/图56.jpg) no-repeat center center !important;
-        background-size: cover;
+        background: url(../images/图56.jpg) center/cover no-repeat !important;
         min-width: 280px;
         max-width: 350px;
         z-index: 1000;
@@ -594,9 +689,10 @@ span.fa {
     -moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.8);
     box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.8);
     padding: 50px;
-    background: #f8f9fa url(../images/图56.jpg) no-repeat center center fixed;
+    background: url(../images/图56.jpg) center/cover no-repeat !important;
     background-size: cover;
-    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 15px;
     border: 1px solid #dee2e6;
     transition: all 0.5s ease;
@@ -629,12 +725,6 @@ span.fa {
         transform: translateX(100%) rotate(45deg);
     }
 }
-.sub-main-w3 {
-  background: #f8f9fa;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  border: 1px solid #dee2e6;
-}
-
 }
 @media(max-width: 1050px){
     .sub-main-w3 {
