@@ -35,10 +35,10 @@
 
 <body>
     <div class="video-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; margin: 0; padding: 0;">
-        <video id="bgVideo1" autoplay muted loop style="min-width: 100%; min-height: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: cover;">
+        <video id="bgVideo1" autoplay muted loop style="width: 100vw; height: 100vh; object-fit: cover; position: absolute;">
             <source src="audio/login1.mp4" type="video/mp4">
         </video>
-        <video id="bgVideo2" autoplay muted loop style="display:none; min-width: 100%; min-height: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: cover;">
+        <video id="bgVideo2" autoplay muted loop style="display:none; width: 100vw; height: 100vh; object-fit: cover; position: absolute;">
             <source src="audio/login2.mp4" type="video/mp4">
         </video>
     </div>
@@ -65,39 +65,52 @@
             const bgMusic = document.getElementById('bgMusic');
             bgMusic.volume = 0.5;
             
-            // 确保音乐自动播放
+            // 更激进的自动播放策略
             function ensurePlayback() {
-                if (bgMusic.paused) {
-                    // 直接尝试播放（不静音）
-                    const playPromise = bgMusic.play();
-                    
-                    if (playPromise !== undefined) {
-                        playPromise.then(() => {
-                            console.log('背景音乐直接播放成功');
-                        }).catch(e => {
-                            console.error('背景音乐直接播放失败:', e);
-                            // 如果直接播放失败，尝试静音播放
-                            bgMusic.muted = true;
-                            bgMusic.play().then(() => {
-                                console.log('背景音乐静音播放成功');
-                                // 添加用户交互事件监听，准备取消静音
-                                document.addEventListener('click', function unmuteOnInteraction() {
-                                    bgMusic.muted = false;
-                                    console.log('用户交互后取消静音');
-                                    document.removeEventListener('click', unmuteOnInteraction);
-                                }, { once: true });
-                            }).catch(e => {
-                                console.error('背景音乐静音播放也失败:', e);
-                                // 如果静音播放也失败，添加交互后播放的监听
-                                document.addEventListener('click', function playOnInteraction() {
-                                    bgMusic.play().then(() => {
-                                        bgMusic.muted = false;
-                                    }).catch(e => console.error('交互后播放失败:', e));
-                                    document.removeEventListener('click', playOnInteraction);
-                                }, { once: true });
+                // 先静音播放确保能立即播放
+                bgMusic.muted = true;
+                
+                // 尝试直接播放
+                const playPromise = bgMusic.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('背景音乐静音播放成功');
+                        
+                        // 立即尝试取消静音（不等待load事件）
+                        bgMusic.muted = false;
+                        
+                        // 添加触摸/点击事件监听器作为备用
+                        const events = ['click', 'touchstart', 'keydown'];
+                        const unmuteHandler = function() {
+                            bgMusic.muted = false;
+                            events.forEach(evt => {
+                                document.removeEventListener(evt, unmuteHandler);
                             });
+                        };
+                        
+                        events.forEach(evt => {
+                            document.addEventListener(evt, unmuteHandler, { once: true });
                         });
-                    }
+                        
+                    }).catch(e => {
+                        console.error('背景音乐播放失败:', e);
+                        
+                        // 如果失败，添加交互后播放的监听
+                        const playHandler = function() {
+                            bgMusic.play().then(() => {
+                                bgMusic.muted = false;
+                            });
+                            events.forEach(evt => {
+                                document.removeEventListener(evt, playHandler);
+                            });
+                        };
+                        
+                        const events = ['click', 'touchstart', 'keydown'];
+                        events.forEach(evt => {
+                            document.addEventListener(evt, playHandler, { once: true });
+                        });
+                    });
                 }
             }
             
@@ -328,15 +341,49 @@
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             const isWeChatMobile = /MicroMessenger/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent);
             
+            // 检测视频是否可播放
+            function checkVideoPlayable(video, callback) {
+                video.addEventListener('error', () => {
+                    console.log('视频加载失败');
+                    callback(false);
+                });
+                
+                video.addEventListener('canplay', () => {
+                    console.log('视频可以播放');
+                    callback(true);
+                });
+                
+                // 设置超时检测
+                setTimeout(() => {
+                    if (video.readyState < 3) { // HAVE_FUTURE_DATA
+                        console.log('视频加载超时');
+                        callback(false);
+                    }
+                }, 3000);
+            }
+
             if (isMobile || isWeChatMobile) {
                 // 移动设备或微信移动端，使用背景图片
                 const videoContainer = document.querySelector('.video-background');
                 videoContainer.innerHTML = '';
                 const bgImage = document.createElement('div');
-                bgImage.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url(../images/图56.jpg) center/cover no-repeat;';
+                bgImage.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url(images/图56.jpg) center/cover no-repeat;';
                 videoContainer.appendChild(bgImage);
                 return;
             }
+
+            // 检测视频1是否可播放
+            checkVideoPlayable(video1, (canPlay) => {
+                if (!canPlay) {
+                    console.log('主视频加载失败，切换到图片背景');
+                    const videoContainer = document.querySelector('.video-background');
+                    videoContainer.innerHTML = '';
+                    const bgImage = document.createElement('div');
+                    bgImage.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url(images/图56.jpg) center/cover no-repeat;';
+                    videoContainer.appendChild(bgImage);
+                    return;
+                }
+            });
 
             // 初始化视频状态
             video1.style.display = 'block';
