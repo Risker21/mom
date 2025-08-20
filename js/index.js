@@ -1,11 +1,35 @@
-$(window).on("load", function () {
+// 加载完成处理函数
+function handlePageLoad() {
   gsap.to("#loader", 1, { y: "-100%" });
   gsap.to("#loader", 1, { opacity: 0 });
   gsap.to("#loader", 0, { display: "none", delay: 1 });
   gsap.to("#header", 0, { display: "block", delay: 1 });
   gsap.to("#navigation-content", 0, { display: "none" });
   gsap.to("#navigation-content", 0, { display: "flex", delay: 1 });
-});
+  
+  // 清除超时定时器，防止重复执行
+  if (window.loadTimeout) {
+    clearTimeout(window.loadTimeout);
+    window.loadTimeout = null;
+  }
+}
+
+// 设置3秒超时机制 - 防止网络问题导致加载动画卡住
+window.loadTimeout = setTimeout(function() {
+  // 如果3秒后页面还没有加载完成，强制隐藏加载动画
+  if (document.readyState !== 'complete') {
+    console.log('页面加载超时，强制隐藏加载动画');
+    handlePageLoad();
+  }
+}, 3000);
+
+// 页面加载完成事件
+$(window).on("load", handlePageLoad);
+
+// 如果页面已经加载完成，立即执行
+if (document.readyState === 'complete') {
+  handlePageLoad();
+}
 $(function () {
   $(".color-panel").on("click", function (e) {
     e.preventDefault();
