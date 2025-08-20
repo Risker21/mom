@@ -375,7 +375,7 @@
           <b style="color: #720b77;font-size: 15px;">请勿相信,请勿点击!!!</b>
           <br />
           <strong style="font-size: 20px;">手机用户:</strong> <br />请特别注意,只能使用
-          <b style="color: #da500a">线路1,2,11,12</b><br />
+          <b style="color: #da500a">线路1,2</b><br />
           <strong style="font-size: 20px;">电脑用户:</strong><br />可使用全部线路
           <br />
           <strong style="font-size: 20px;">平板用户：<br></strong>暂未进行测试,请谨慎选择线路
@@ -485,7 +485,7 @@
         </div>
         <select id="parseLine">
           <option value="1">线路1(输入片名或地址)</option>
-          <option value="2">线路2</option>
+          <option value="2">线路2(稳定)</option>
           <option value="3" disabled>线路3(手机端不可用)</option>
           <option value="4" disabled>线路4(手机端不可用)</option>
           <option value="5" disabled>线路5(手机端不可用)</option>
@@ -494,8 +494,6 @@
           <option value="8" disabled>线路8(手机端不可用)</option>
           <option value="9" disabled>线路9(手机端不可用)</option>
           <option value="10" disabled>线路10(手机端不可用)</option>
-          <option value="11">线路11(双解析地址)</option>
-          <option value="12">线路12(双解析地址)</option>
         </select>
         <script>
           // 检测设备类型并设置线路选项
@@ -508,9 +506,9 @@
             const parseLine = document.getElementById("parseLine");
 
             if (isMobile) {
-              // 手机端可以使用线路1,2,11,12
+              // 手机端只能使用线路1和线路2
               Array.from(parseLine.options).forEach((option) => {
-                option.disabled = !["1", "2", "11", "12"].includes(option.value);
+                option.disabled = option.value !== "1" && option.value !== "2";
               });
             } else {
               // 电脑端启用所有线路
@@ -522,158 +520,16 @@
           // 页面加载时设置线路选项
           window.addEventListener("load", setLineOptions);
         </script>
-        <button id="playBtn" onclick="playVideo()">
-          <span id="btnText">解析播放</span>
-          <span id="loadingSpinner" style="display:none">
-            <svg width="20" height="20" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
-                  <stop stop-color="#fff" stop-opacity="0" offset="0%"/>
-                  <stop stop-color="#fff" stop-opacity=".631" offset="63.146%"/>
-                  <stop stop-color="#fff" offset="100%"/>
-                </linearGradient>
-              </defs>
-              <g fill="none" fill-rule="evenodd">
-                <g transform="translate(1 1)">
-                  <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
-                    <animateTransform
-                      attributeName="transform"
-                      type="rotate"
-                      from="0 18 18"
-                      to="360 18 18"
-                      dur="0.9s"
-                      repeatCount="indefinite" />
-                  </path>
-                  <circle fill="#fff" cx="36" cy="18" r="1">
-                    <animateTransform
-                      attributeName="transform"
-                      type="rotate"
-                      from="0 18 18"
-                      to="360 18 18"
-                      dur="0.9s"
-                      repeatCount="indefinite" />
-                  </circle>
-                </g>
-              </g>
-            </svg>
-          </span>
-        </button>
-        <button id="cancelBtn" style="display:none; margin-left:10px; background:var(--danger)" onclick="cancelPlay()">取消解析</button>
-        <script>
-          let loadingTimeout;
-          let isParsing = false;
-          
-          function cancelPlay() {
-            if(isParsing) {
-              clearTimeout(loadingTimeout);
-              resetButtonState();
-            }
-          }
-          
-          function resetButtonState() {
-            const playBtn = document.getElementById("playBtn");
-            const btnText = document.getElementById("btnText");
-            const loadingSpinner = document.getElementById("loadingSpinner");
-            const cancelBtn = document.getElementById("cancelBtn");
-            
-            playBtn.disabled = false;
-            btnText.textContent = "解析播放";
-            loadingSpinner.style.display = "none";
-            cancelBtn.style.display = "none";
-            isParsing = false;
-          }
-        </script>
-        <style>
-          #playBtn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-          }
-          #loadingSpinner svg {
-            animation: rotate 2s linear infinite;
-          }
-          @keyframes rotate {
-            100% {
-              transform: rotate(360deg);
-            }
-          }
-        </style>
-            <svg width="20" height="20" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
-                  <stop stop-color="#fff" stop-opacity="0" offset="0%"/>
-                  <stop stop-color="#fff" stop-opacity=".631" offset="63.146%"/>
-                  <stop stop-color="#fff" offset="100%"/>
-                </linearGradient>
-              </defs>
-              <g fill="none" fill-rule="evenodd">
-                <g transform="translate(1 1)">
-                  <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
-                    <animateTransform
-                      attributeName="transform"
-                      type="rotate"
-                      from="0 18 18"
-                      to="360 18 18"
-                      dur="0.9s"
-                      repeatCount="indefinite" />
-                  </path>
-                  <circle fill="#fff" cx="36" cy="18" r="1">
-                    <animateTransform
-                      attributeName="transform"
-                      type="rotate"
-                      from="0 18 18"
-                      to="360 18 18"
-                      dur="0.9s"
-                      repeatCount="indefinite" />
-                  </circle>
-                </g>
-              </g>
-            </svg>
-          </span>
-        </button>
-        <style>
-          #playBtn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-          }
-          #loadingSpinner svg {
-            animation: rotate 2s linear infinite;
-          }
-          @keyframes rotate {
-            100% {
-              transform: rotate(360deg);
-            }
-          }
-        </style>
+        <button id="playBtn" onclick="playVideo()">播放视频</button>
         <script>
           function playVideo() {
             const videoUrl = document.getElementById("videoUrl").value;
             const parseLine = document.getElementById("parseLine").value;
-            const playBtn = document.getElementById("playBtn");
-            const btnText = document.getElementById("btnText");
-            const loadingSpinner = document.getElementById("loadingSpinner");
 
             if (!videoUrl) {
               alert("请输入视频地址");
               return;
             }
-
-            // 显示加载状态
-            playBtn.disabled = true;
-            btnText.textContent = "正在解析中"; 
-            loadingSpinner.style.display = "inline-block";
-            document.getElementById("cancelBtn").style.display = "inline-block";
-            isParsing = true;
-            
-            // 设置10秒超时
-            loadingTimeout = setTimeout(() => {
-              if(isParsing) {
-                resetButtonState();
-              }
-            }, 10000);
 
             // 修改线路1为直接调用z1.m1907.top接口（整合中转页面逻辑）
             const parseUrls = [
@@ -687,51 +543,15 @@
               "https://www.ckplayer.vip/jiexi/?url=",
               "https://cp.123456789.qpon/jiexi.php?url=",
               "https://www.pouyun.com/?url=",
-              "https://jx.2s0.cn/player/analysis.php?v=", // 备用解析接口1
-              "https://jx.2s0.cn/player/?url=", // 备用解析接口2
-              "https://jx.77flv.cc/?url=", // 线路12解析地址1
-              "https://jx.nnxv.cn/tv.php?url=", // 线路12解析地址2
             ];
 
             // 直接调用对应线路的接口（线路1已整合中转逻辑）
             const selectedParser = parseInt(parseLine) - 1;
-            
-            // 特殊处理线路11，尝试两个解析地址
-            if (parseLine === "11") {
-              // 第一个解析地址
-              document.getElementById("videoFrame").src =
-                parseUrls[10] + encodeURIComponent(videoUrl) + "&line=11";
-              
-              // 如果第一个失败，尝试第二个
-              document.getElementById("videoFrame").onerror = function() {
-                document.getElementById("videoFrame").src =
-                  parseUrls[11] + encodeURIComponent(videoUrl) + "&line=11";
-              };
-            } else if (parseLine === "12") {
-              // 第一个解析地址
-              document.getElementById("videoFrame").src =
-                parseUrls[12] + encodeURIComponent(videoUrl) + "&line=12";
-              
-              // 如果第一个失败，尝试第二个
-              document.getElementById("videoFrame").onerror = function() {
-                document.getElementById("videoFrame").src =
-                  parseUrls[13] + encodeURIComponent(videoUrl) + "&line=12";
-              };
-            } else {
-            // 其他线路正常处理
-            document.getElementById("videoFrame").onload = function() {
-              // 解析成功，恢复按钮状态
-              playBtn.disabled = false;
-              btnText.textContent = "解析播放";
-              loadingSpinner.style.display = "none";
-            };
-            
             document.getElementById("videoFrame").src =
-                parseUrls[selectedParser] +
-                encodeURIComponent(videoUrl) +
-                "&line=" +
-                parseLine;
-            }
+              parseUrls[selectedParser] +
+              encodeURIComponent(videoUrl) +
+              "&line=" +
+              parseLine;
 
             // 解析失败的 fallback 逻辑（保持不变）
             // 清除按钮悬停效果
@@ -747,10 +567,6 @@
               });
 
             document.getElementById("videoFrame").onerror = function () {
-              // 恢复按钮状态
-              resetButtonState();
-              clearTimeout(loadingTimeout);
-              
               alert(`线路${parseLine}解析失败，正在尝试其他线路...`);
               let currentParser = 0;
               const tryNextParser = () => {
@@ -759,11 +575,11 @@
                   return;
                 }
                 if (currentParser !== selectedParser) {
-            document.getElementById("videoFrame").src =
-                parseUrls[selectedParser] +
-                encodeURIComponent(videoUrl) +
-                "&line=" +
-                parseLine;
+                  document.getElementById("videoFrame").src =
+                    parseUrls[currentParser] +
+                    encodeURIComponent(videoUrl) +
+                    "&line=" +
+                    parseLine;
                 }
                 currentParser++;
               };
