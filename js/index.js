@@ -1,11 +1,27 @@
-$(window).on("load", function () {
+// 加载动画处理 - 添加超时机制防止网络不好时卡住
+var loaderHidden = false;
+
+function hideLoader() {
+  if (loaderHidden) return;
+  loaderHidden = true;
+  
   gsap.to("#loader", 1, { y: "-100%" });
   gsap.to("#loader", 1, { opacity: 0 });
   gsap.to("#loader", 0, { display: "none", delay: 1 });
   gsap.to("#header", 0, { display: "block", delay: 1 });
   gsap.to("#navigation-content", 0, { display: "none" });
   gsap.to("#navigation-content", 0, { display: "flex", delay: 1 });
+}
+
+// 主要依赖window.load事件
+$(window).on("load", function () {
+  hideLoader();
 });
+
+// 备用方案：8秒超时，确保即使网络不好也能隐藏加载动画
+setTimeout(function() {
+  hideLoader();
+}, 8000);
 $(function () {
   $(".color-panel").on("click", function (e) {
     e.preventDefault();
