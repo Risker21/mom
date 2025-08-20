@@ -212,9 +212,9 @@ $(function () {
 
   // 音乐列表
   const musicFiles = [
-    "html\link\music\此类生物.mp3",
-    "html\link\music\秋风.mp3",
-    "html\link\music\水星记.mp3",
+    "link/music/此类生物.mp3",
+    "link/music/秋风.mp3",
+    "link/music/水星记.mp3",
     "link/music/Anyone.mp3",
     "link/music/搁浅.mp3",
     "link/music/戒不掉.mp3",
@@ -243,6 +243,8 @@ $(function () {
     "link/music/reach.mp3",
     "link/music/III.mp3",
     "link/music/家后.mp3",
+    "link/music/离开我的依赖.mp3",
+    "link/music/路过人间.mp3"
   ];
 
   // 随机选择音乐
