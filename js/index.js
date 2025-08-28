@@ -269,7 +269,15 @@ $(function () {
     "link/music/家后.mp3",
     "link/music/离开我的依赖.mp3",
     "link/music/路过人间.mp3",
-    "link/music/飞鸟和蝉.mp3"
+    "link/music/飞鸟和蝉.mp3",
+    "link/music/真爱的力量.mp3",
+    "link/music/Kamin.mp3",
+    "link/music/推开世界的门.mp3",
+    "link/music/房间.mp3",
+    "link/music/Lonely Day.mp3",
+    "link/music/演员.mp3",
+    "link/music/安和桥.mp3"
+    
   ];
 
   // 随机选择音乐
