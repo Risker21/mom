@@ -240,6 +240,12 @@ $(function () {
     "link/music/想自由.mp3",
     "link/music/归途有风.mp3",
     "link/music/Born To Live.mp3"
+    "link/music/搁浅.mp3",
+    "link/music/离开我的依赖.mp3",
+    "link/music/推开世界的门.mp3",
+    "link/music/我记得.mp3",
+    "link/music/这世界那么多人.mp3"
+    
 
     
   ];
