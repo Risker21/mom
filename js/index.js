@@ -236,22 +236,58 @@ $(function () {
 
   // 音乐列表
   const musicFiles = [
-    "link/music/此类生物.mp3",
-    "link/music/想自由.mp3",
-    "link/music/归途有风.mp3",
-    "link/music/飞鸟和蝉.mp3",
     "link/music/搁浅.mp3",
-    "link/music/离开我的依赖.mp3",
-    "link/music/推开世界的门.mp3",
+    "link/music/戒不掉.mp3",
+    "link/music/柳叶笺.mp3",
+    "link/music/明天，你好.mp3",
     "link/music/我记得.mp3",
     "link/music/这世界那么多人.mp3",
+    "link/music/安和桥.mp3",
+    "link/music/程艾影.mp3",
+    "link/music/此类生物.mp3",
+    "link/music/房间.mp3",
+    "link/music/飞鸟和蝉.mp3",
+    "link/music/归途有风.mp3",
+    "link/music/红色高跟鞋.mp3",
+    "link/music/家后.mp3",
+    "link/music/离开我的依赖.mp3",
+    "link/music/路过人间.mp3",
+    "link/music/哪里都是你.mp3",
+    "link/music/秋风.mp3",
+    "link/music/是什么让我遇见这样的你.mp3",
+    "link/music/水星记.mp3",
+    "link/music/所念皆星河.mp3",
+    "link/music/推开世界的门.mp3",
     "link/music/晚安.mp3",
-    "link/music/红色高跟鞋.mp3"
+    "link/music/无额.mp3",
+    "link/music/想自由.mp3",
+    "link/music/演员.mp3",
+    "link/music/鱼仔.mp3",
+    "link/music/真爱的力量.mp3",
+    "link/music/终生老友.mp3",
+    "link/music/Anyone.mp3",
+    "link/music/blue dragon.mp3",
+    "link/music/Born To Live.mp3",
+    "link/music/everglow.mp3",
+    "link/music/every time we touch.mp3",
+    "link/music/I Really Want To Stay At Your House.mp3",
+    "link/music/III.mp3",
+    "link/music/Kamin.mp3",
+    "link/music/let her go.mp3",
+    "link/music/Lonely Day.mp3",
+    "link/music/looking forward.mp3",
+    "link/music/Lonereach.mp3",
+    "link/music/sacred play secret place.mp3",
+    "link/music/Trouble I’m in.mp3",
+    "link/music/WE PRAY.mp3",
+    "link/music/what was that.mp3",
+    "link/music/white ferrari.mp3"
+   
     
 
     
   ];
-      // "link/music/秋风.mp3",
+    // "link/music/秋风.mp3",
     // "link/music/水星记.mp3",
     // "link/music/Anyone.mp3",
     // "link/music/搁浅.mp3",
@@ -377,4 +413,3 @@ $(function () {
     }
   });
 });
-
