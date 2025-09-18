@@ -47,24 +47,54 @@ let audioContext = null;
 
 // 调整画布尺寸以适应屏幕
 function adjustCanvasSize() {
-    // 检查是否在移动设备上
-    const isMobile = window.innerWidth <= 768;
+    // 更精确地检测移动设备
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
     
     if (isMobile) {
-        // 在移动设备上，计算合适的方块大小
-        const maxBoardWidth = window.innerWidth - 40; // 减去边距
-        const adjustedBlockSize = Math.floor(maxBoardWidth / COLS);
+        // 获取屏幕可用高度和宽度，考虑到安全区域
+        const windowHeight = window.innerHeight;
+        const windowWidth = window.innerWidth;
+        
+        // 在移动设备上，优先考虑高度来计算合适的方块大小，确保游戏区域不会超出屏幕
+        const maxBoardHeight = windowHeight * 0.6; // 游戏板高度不超过屏幕高度的60%
+        const maxBoardWidth = windowWidth - 30; // 减去边距
+        
+        // 计算基于高度的方块大小
+        const blockSizeByHeight = Math.floor(maxBoardHeight / ROWS);
+        // 计算基于宽度的方块大小
+        const blockSizeByWidth = Math.floor(maxBoardWidth / COLS);
+        
+        // 取较小的值作为最终方块大小，确保能适应屏幕
+        const adjustedBlockSize = Math.min(blockSizeByHeight, blockSizeByWidth);
         
         // 设置调整后的尺寸
         canvas.width = COLS * adjustedBlockSize;
         canvas.height = ROWS * adjustedBlockSize;
         
         // 调整下一个方块预览的尺寸
-        nextCanvas.width = NEXT_BLOCK_COLS * adjustedBlockSize * 0.8;
-        nextCanvas.height = NEXT_BLOCK_ROWS * adjustedBlockSize * 0.8;
+        const nextBlockScale = 0.75; // 下一个方块预览的缩放比例
+        nextCanvas.width = NEXT_BLOCK_COLS * adjustedBlockSize * nextBlockScale;
+        nextCanvas.height = NEXT_BLOCK_ROWS * adjustedBlockSize * nextBlockScale;
         
         // 存储调整后的方块大小，用于重绘
         window.adjustedBlockSize = adjustedBlockSize;
+        
+        // 调整游戏容器的位置，确保在屏幕上居中
+        const gameContainer = document.querySelector('.game-container');
+        if (gameContainer) {
+            const computedStyle = window.getComputedStyle(gameContainer);
+            const containerMargin = parseInt(computedStyle.marginTop) + parseInt(computedStyle.marginBottom);
+            const containerHeight = gameContainer.offsetHeight;
+            
+            // 如果游戏容器高度加上控制区域高度超过屏幕高度，调整容器的位置
+            const mobileControls = document.getElementById('mobile-controls');
+            if (mobileControls && containerHeight + containerMargin + mobileControls.offsetHeight > windowHeight) {
+                const translateY = Math.max(0, (windowHeight - (containerHeight + containerMargin + mobileControls.offsetHeight)) / 2);
+                gameContainer.style.transform = `translateY(${translateY}px)`;
+            } else {
+                gameContainer.style.transform = '';
+            }
+        }
     } else {
         // 在桌面设备上使用原始尺寸
         canvas.width = COLS * BLOCK_SIZE;
@@ -72,6 +102,12 @@ function adjustCanvasSize() {
         nextCanvas.width = NEXT_BLOCK_COLS * NEXT_BLOCK_SIZE;
         nextCanvas.height = NEXT_BLOCK_ROWS * NEXT_BLOCK_SIZE;
         window.adjustedBlockSize = BLOCK_SIZE;
+        
+        // 重置游戏容器的位置
+        const gameContainer = document.querySelector('.game-container');
+        if (gameContainer) {
+            gameContainer.style.transform = '';
+        }
     }
 }
 
@@ -80,6 +116,24 @@ adjustCanvasSize();
 
 // 监听窗口大小变化，调整画布尺寸
 window.addEventListener('resize', adjustCanvasSize);
+
+// 监听设备方向变化，重新调整画布尺寸
+window.addEventListener('orientationchange', adjustCanvasSize);
+
+// 监听触摸事件，防止页面滚动
+document.addEventListener('touchstart', function(e) {
+    // 只有在游戏运行时阻止默认行为
+    if (isGameRunning) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+document.addEventListener('touchmove', function(e) {
+    // 只有在游戏运行时阻止默认行为
+    if (isGameRunning) {
+        e.preventDefault();
+    }
+}, { passive: false });
 
 // 方块形状定义
 const TETROMINOS = {

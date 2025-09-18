@@ -13,6 +13,13 @@ body {
     align-items: center;
     justify-content: center;
     color: #333;
+    overflow-x: hidden;
+}
+
+/* 防止点击延迟 */
+* {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 /* 游戏容器 */
@@ -25,6 +32,8 @@ body {
     width: 100%;
     max-width: 900px;
     animation: fadeIn 0.8s ease-out;
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes fadeIn {
@@ -60,6 +69,7 @@ body {
     align-items: center;
     gap: 40px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 /* 音效控制按钮 */
@@ -412,86 +422,148 @@ body {
     box-sizing: border-box;
     backdrop-filter: blur(10px);
     z-index: 900;
+    padding-bottom: env(safe-area-inset-bottom, 20px);
 }
 
 .control-pad {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
 .pad-row {
     display: flex;
-    gap: 10px;
+    gap: 15px;
 }
 
 .pad-button {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border: none;
-    border-radius: 15px;
+    border-radius: 20px;
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    font-size: 1.5rem;
+    font-size: 2rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .pad-button:active {
     background: rgba(255, 255, 255, 0.4);
     transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .action-button {
     display: block;
     margin: 0 auto;
-    padding: 15px 30px;
+    padding: 20px 40px;
     border: none;
     border-radius: 15px;
     background: linear-gradient(45deg, #FF9800, #F57C00);
     color: white;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
 }
 
 .action-button:active {
     transform: scale(0.95);
-    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+    box-shadow: 0 3px 8px rgba(255, 152, 0, 0.2);
 }
 
 /* 响应式设计调整 */
 @media (max-width: 768px) {
+    body {
+        min-height: 100vh;
+        height: 100vh;
+        overflow: hidden;
+    }
+    
     .game-container {
         padding: 15px;
-        margin: 20px;
+        margin: 10px;
         max-width: none;
+        min-height: calc(100vh - 20px);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .game-header {
+        margin-bottom: 15px;
     }
     
     .game-header h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
     }
     
     .game-info {
-        gap: 20px;
+        gap: 15px;
+        margin-top: 15px;
     }
     
     .score, .level, .lines {
-        padding: 10px 20px;
+        padding: 8px 15px;
+        min-width: 80px;
+    }
+    
+    .score-label, .level-label, .lines-label {
+        font-size: 0.8rem;
     }
     
     .score-value, .level-value, .lines-value {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
+    }
+    
+    .game-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .game-sidebar {
+        width: 100%;
+        max-width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .next-piece {
+        padding: 15px;
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    .next-piece-label {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+    
+    .game-controls {
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    .control-button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
     }
     
     /* 在移动设备上显示触摸控制器，隐藏操作说明 */
@@ -507,11 +579,34 @@ body {
     .tetris-board {
         max-width: 100%;
         height: auto;
+        border-width: 2px;
     }
     
     .next-piece-canvas {
         max-width: 100%;
         height: auto;
+    }
+    
+    /* 游戏结束弹窗适配 */
+    .modal-content {
+        margin: 20px;
+        padding: 30px 20px;
+        min-width: auto;
+        width: calc(100% - 40px);
+    }
+    
+    .modal-title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    .final-score-value {
+        font-size: 2rem;
+    }
+    
+    .modal-button {
+        padding: 12px 25px;
+        font-size: 1rem;
     }
 }
 
