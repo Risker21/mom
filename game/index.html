@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>现代俄罗斯方块</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>俄罗斯方块</h1>
+            <div class="game-info">
+                <div class="score">
+                    <div class="score-label">得分</div>
+                    <div class="score-value" id="score">0</div>
+                </div>
+                <div class="level">
+                    <div class="level-label">等级</div>
+                    <div class="level-value" id="level">1</div>
+                </div>
+                <div class="lines">
+                    <div class="lines-label">行数</div>
+                    <div class="lines-value" id="lines">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-content">
+            <!-- 游戏主区域 -->
+            <div class="game-main">
+                <canvas id="tetris-board" class="tetris-board"></canvas>
+            </div>
+            
+            <!-- 游戏侧边栏 -->
+            <div class="game-sidebar">
+                <!-- 下一个方块预览 -->
+                <div class="next-piece">
+                    <div class="next-piece-label">下一个</div>
+                    <canvas id="next-piece-canvas" class="next-piece-canvas"></canvas>
+                </div>
+                
+                <!-- 控制按钮 -->
+                <div class="game-controls">
+                    <button id="start-button" class="control-button start-button"><i class="fas fa-play"></i> 开始</button>
+                    <button id="pause-button" class="control-button pause-button" disabled><i class="fas fa-pause"></i> 暂停</button>
+                    <button id="reset-button" class="control-button reset-button"><i class="fas fa-redo"></i> 重置</button>
+                </div>
+                
+                <!-- 操作说明 -->
+                <div class="game-instructions">
+                    <div class="instructions-title">操作说明</div>
+                    <div class="instruction-item">
+                        <span class="key">↑</span>
+                        <span class="action">旋转</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span class="key">←</span> <span class="key">→</span>
+                        <span class="action">左右移动</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span class="key">↓</span>
+                        <span class="action">加速下落</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span class="key">空格</span>
+                        <span class="action">直接落地</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span class="key">P</span>
+                        <span class="action">暂停/继续</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 游戏结束弹窗 -->
+        <div id="game-over-modal" class="game-modal hidden">
+            <div class="modal-content">
+                <div class="modal-title">游戏结束</div>
+                <div class="final-score">
+                    <div class="final-score-label">最终得分</div>
+                    <div class="final-score-value" id="final-score">0</div>
+                </div>
+                <div class="modal-controls">
+                    <button id="play-again-button" class="modal-button">再玩一次</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 移动端触摸控制器 -->
+    <div class="mobile-controls" id="mobile-controls">
+        <div class="control-pad">
+            <div class="pad-row">
+                <button id="rotate-button" class="pad-button rotate-button"><i class="fas fa-arrow-up"></i></button>
+            </div>
+            <div class="pad-row">
+                <button id="left-button" class="pad-button left-button"><i class="fas fa-arrow-left"></i></button>
+                <button id="down-button" class="pad-button down-button"><i class="fas fa-arrow-down"></i></button>
+                <button id="right-button" class="pad-button right-button"><i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+        <button id="drop-button" class="action-button drop-button">
+            <i class="fas fa-bolt"></i>
+            <span>快速下落</span>
+        </button>
+    </div>
+
+    <!-- 游戏音效控制按钮 -->
+    <div class="sound-control">
+        <button id="toggle-sound" class="sound-button">
+            <i class="fas fa-volume-up"></i>
+            <span>音效: 开启</span>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
