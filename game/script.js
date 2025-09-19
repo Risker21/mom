@@ -50,14 +50,16 @@ function adjustCanvasSize() {
     // 更精确地检测移动设备
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
     
+    // 获取屏幕可用高度和宽度，考虑到安全区域
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+    
+    // 移动控制区域现在是相对定位，不需要从视口高度减去
+    
     if (isMobile) {
-        // 获取屏幕可用高度和宽度，考虑到安全区域
-        const windowHeight = window.innerHeight;
-        const windowWidth = window.innerWidth;
-        
-        // 在移动设备上，优先考虑高度来计算合适的方块大小，确保游戏区域不会超出屏幕
-        const maxBoardHeight = windowHeight * 0.6; // 游戏板高度不超过屏幕高度的60%
-        const maxBoardWidth = windowWidth - 30; // 减去边距
+        // 在移动设备上，优先考虑宽度来计算合适的方块大小
+        const maxBoardWidth = windowWidth - 40; // 减去更多边距，确保内容居中显示
+        const maxBoardHeight = windowHeight * 0.6; // 增加游戏板高度比例
         
         // 计算基于高度的方块大小
         const blockSizeByHeight = Math.floor(maxBoardHeight / ROWS);
@@ -72,28 +74,26 @@ function adjustCanvasSize() {
         canvas.height = ROWS * adjustedBlockSize;
         
         // 调整下一个方块预览的尺寸
-        const nextBlockScale = 0.75; // 下一个方块预览的缩放比例
+        const nextBlockScale = 0.7; // 下一个方块预览的缩放比例
         nextCanvas.width = NEXT_BLOCK_COLS * adjustedBlockSize * nextBlockScale;
         nextCanvas.height = NEXT_BLOCK_ROWS * adjustedBlockSize * nextBlockScale;
         
         // 存储调整后的方块大小，用于重绘
         window.adjustedBlockSize = adjustedBlockSize;
         
-        // 调整游戏容器的位置，确保在屏幕上居中
+        // 调整游戏容器的位置，确保在屏幕上居中且内容完全可见
         const gameContainer = document.querySelector('.game-container');
         if (gameContainer) {
-            const computedStyle = window.getComputedStyle(gameContainer);
-            const containerMargin = parseInt(computedStyle.marginTop) + parseInt(computedStyle.marginBottom);
-            const containerHeight = gameContainer.offsetHeight;
+            // 重置任何之前的transform设置
+            gameContainer.style.transform = '';
+            gameContainer.style.marginTop = '0';
             
-            // 如果游戏容器高度加上控制区域高度超过屏幕高度，调整容器的位置
-            const mobileControls = document.getElementById('mobile-controls');
-            if (mobileControls && containerHeight + containerMargin + mobileControls.offsetHeight > windowHeight) {
-                const translateY = Math.max(0, (windowHeight - (containerHeight + containerMargin + mobileControls.offsetHeight)) / 2);
-                gameContainer.style.transform = `translateY(${translateY}px)`;
-            } else {
-                gameContainer.style.transform = '';
-            }
+            // 移除高度限制，让内容可以自由流动
+            gameContainer.style.maxHeight = 'none';
+            gameContainer.style.overflow = 'visible';
+            
+            // 确保内容区域能够平滑滚动
+            gameContainer.style.scrollBehavior = 'smooth';
         }
     } else {
         // 在桌面设备上使用原始尺寸
@@ -103,10 +103,25 @@ function adjustCanvasSize() {
         nextCanvas.height = NEXT_BLOCK_ROWS * NEXT_BLOCK_SIZE;
         window.adjustedBlockSize = BLOCK_SIZE;
         
-        // 重置游戏容器的位置
+        // 重置游戏容器的位置和样式
         const gameContainer = document.querySelector('.game-container');
         if (gameContainer) {
             gameContainer.style.transform = '';
+            gameContainer.style.maxHeight = 'none';
+            gameContainer.style.overflow = 'visible';
+            gameContainer.style.marginTop = '0';
+            gameContainer.style.scrollBehavior = 'auto';
+        }
+    }
+    
+    // 强制重绘游戏
+    if (isGameRunning) {
+        drawBoard();
+        if (currentPiece) {
+            drawCurrentPiece();
+        }
+        if (nextPiece) {
+            drawNextPiece();
         }
     }
 }
@@ -122,17 +137,18 @@ window.addEventListener('orientationchange', adjustCanvasSize);
 
 // 监听触摸事件，防止页面滚动
 document.addEventListener('touchstart', function(e) {
-    // 只有在游戏运行时阻止默认行为
-    if (isGameRunning) {
-        e.preventDefault();
-    }
+    // 阻止默认行为以防止页面滚动
+    e.preventDefault();
 }, { passive: false });
 
 document.addEventListener('touchmove', function(e) {
-    // 只有在游戏运行时阻止默认行为
-    if (isGameRunning) {
-        e.preventDefault();
-    }
+    // 阻止默认行为以防止页面滚动
+    e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchend', function(e) {
+    // 阻止默认行为
+    e.preventDefault();
 }, { passive: false });
 
 // 方块形状定义
@@ -901,84 +917,127 @@ function initGame() {
     document.addEventListener('keydown', checkAndResumeAudio);
     document.addEventListener('touchstart', checkAndResumeAudio);
     
-    // 添加移动端触摸控制事件监听
+    // 添加移动端触摸控制事件监听，使用更可靠的事件处理方式
     
-    // 添加移动端触摸控制事件监听
-    if (leftButton) {
-        leftButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (isGameRunning && !isPaused && isValidMove(currentPiece, -1, 0)) {
-                currentPiece.x--;
-                drawBoard();
-                playSound('move');
-            }
-        });
+    // 使用一个辅助函数来绑定触摸事件，确保在所有移动设备上都能正常工作
+    function bindTouchEvent(element, callback) {
+        if (element) {
+            // 同时绑定touchstart和mousedown事件，以确保兼容性
+            element.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                callback();
+            }, { passive: false });
+            
+            // 添加额外的点击事件监听作为后备
+            element.addEventListener('click', (e) => {
+                e.preventDefault();
+                callback();
+            });
+        }
     }
     
-    if (rightButton) {
-        rightButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (isGameRunning && !isPaused && isValidMove(currentPiece, 1, 0)) {
-                currentPiece.x++;
-                drawBoard();
-                playSound('move');
-            }
-        });
-    }
+    // 绑定所有触摸控制按钮的事件
+    bindTouchEvent(leftButton, () => {
+        if (isGameRunning && !isPaused && currentPiece && isValidMove(currentPiece, -1, 0)) {
+            currentPiece.x--;
+            drawBoard();
+            playSound('move');
+        }
+    });
     
-    if (downButton) {
-        downButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (isGameRunning && !isPaused && isValidMove(currentPiece, 0, 1)) {
+    bindTouchEvent(rightButton, () => {
+        if (isGameRunning && !isPaused && currentPiece && isValidMove(currentPiece, 1, 0)) {
+            currentPiece.x++;
+            drawBoard();
+            playSound('move');
+        }
+    });
+    
+    bindTouchEvent(downButton, () => {
+        if (isGameRunning && !isPaused && currentPiece && isValidMove(currentPiece, 0, 1)) {
+            currentPiece.y++;
+            drawBoard();
+            score += 1;
+            scoreElement.textContent = score;
+            playSound('move');
+        }
+    });
+    
+    bindTouchEvent(rotateButton, () => {
+        if (isGameRunning && !isPaused && currentPiece) {
+            rotatePiece();
+            drawBoard();
+            playSound('rotate');
+        }
+    });
+    
+    bindTouchEvent(dropButton, () => {
+        if (isGameRunning && !isPaused && currentPiece) {
+            let dropped = false;
+            while (isValidMove(currentPiece, 0, 1)) {
                 currentPiece.y++;
-                drawBoard();
-                score += 1;
+                score += 2;
+                dropped = true;
+            }
+            if (dropped) {
                 scoreElement.textContent = score;
-                playSound('move');
-            }
-        });
-    }
-    
-    if (rotateButton) {
-        rotateButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (isGameRunning && !isPaused) {
-                rotatePiece();
                 drawBoard();
-                playSound('rotate');
+                playSound('drop'); // 使用专门的硬下落音效
             }
-        });
-    }
-    
-    if (dropButton) {
-        dropButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (isGameRunning && !isPaused) {
-                let dropped = false;
-                while (isValidMove(currentPiece, 0, 1)) {
-                    currentPiece.y++;
-                    score += 2;
-                    dropped = true;
-                }
-                if (dropped) {
-                    scoreElement.textContent = score;
-                    drawBoard();
-                    playSound('drop'); // 使用专门的硬下落音效
-                }
-                // 立即处理方块固定
-                setTimeout(() => {
-                    if (isGameRunning && !isPaused) {
-                        lockPiece();
-                        clearLines();
-                        spawnNewPiece();
-                        if (!isValidMove(currentPiece)) {
-                            endGame();
-                        } else {
-                            drawBoard();
-                        }
+            // 立即处理方块固定
+            setTimeout(() => {
+                if (isGameRunning && !isPaused && currentPiece) {
+                    lockPiece();
+                    clearLines();
+                    spawnNewPiece();
+                    if (currentPiece && !isValidMove(currentPiece)) {
+                        endGame();
+                    } else {
+                        drawBoard();
                     }
-                }, 50);
+                }
+            }, 50);
+        }
+    });
+    
+    // 为移动设备添加长按加速功能
+    let holdTimer;
+    
+    // 长按向下按钮加速下落
+    if (downButton) {
+        downButton.addEventListener('touchstart', () => {
+            if (isGameRunning && !isPaused && currentPiece) {
+                // 立即移动一次
+                if (isValidMove(currentPiece, 0, 1)) {
+                    currentPiece.y++;
+                    drawBoard();
+                    score += 1;
+                    scoreElement.textContent = score;
+                    playSound('move');
+                }
+                
+                // 设置定时器，实现长按加速
+                holdTimer = setInterval(() => {
+                    if (isGameRunning && !isPaused && currentPiece && isValidMove(currentPiece, 0, 1)) {
+                        currentPiece.y++;
+                        drawBoard();
+                        score += 1;
+                        scoreElement.textContent = score;
+                        playSound('move');
+                    } else {
+                        clearInterval(holdTimer);
+                    }
+                }, 100); // 每100毫秒移动一次
             }
+        }, { passive: false });
+        
+        // 触摸结束时清除定时器
+        downButton.addEventListener('touchend', () => {
+            clearInterval(holdTimer);
+        });
+        
+        downButton.addEventListener('touchcancel', () => {
+            clearInterval(holdTimer);
         });
     }
 }
