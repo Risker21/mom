@@ -94,6 +94,25 @@ function adjustCanvasSize() {
             
             // 确保内容区域能够平滑滚动
             gameContainer.style.scrollBehavior = 'smooth';
+            
+            // 优化游戏容器样式
+            gameContainer.style.padding = '15px';
+            gameContainer.style.maxWidth = '100%';
+            gameContainer.style.minHeight = 'auto';
+        }
+        
+        // 优化触摸控制器区域
+        const mobileControls = document.querySelector('.mobile-controls');
+        if (mobileControls) {
+            mobileControls.style.display = 'block';
+            mobileControls.style.width = '100%';
+            mobileControls.style.marginTop = '20px';
+            // 确保控制按钮大小适中
+            const padButtons = document.querySelectorAll('.pad-button');
+            padButtons.forEach(button => {
+                button.style.width = '80px';
+                button.style.height = '80px';
+            });
         }
     } else {
         // 在桌面设备上使用原始尺寸
@@ -111,19 +130,38 @@ function adjustCanvasSize() {
             gameContainer.style.overflow = 'visible';
             gameContainer.style.marginTop = '0';
             gameContainer.style.scrollBehavior = 'auto';
+            
+            // 优化桌面样式
+            gameContainer.style.padding = '20px';
+            gameContainer.style.maxWidth = '900px';
+            gameContainer.style.minHeight = 'calc(100vh - 40px)';
+        }
+        
+        // 隐藏移动控制器
+        const mobileControls = document.querySelector('.mobile-controls');
+        if (mobileControls) {
+            mobileControls.style.display = 'none';
         }
     }
     
+    // 确保页面可以在移动设备上正常滚动
+    document.body.style.height = 'auto';
+    document.body.style.overflowY = 'auto';
+    document.documentElement.style.height = 'auto';
+    document.documentElement.style.overflowY = 'auto';
+    
     // 强制重绘游戏
-    if (isGameRunning) {
-        drawBoard();
-        if (currentPiece) {
-            drawCurrentPiece();
+    setTimeout(() => {
+        if (isGameRunning) {
+            drawBoard();
+            if (currentPiece) {
+                drawCurrentPiece();
+            }
+            if (nextPiece) {
+                drawNextPiece();
+            }
         }
-        if (nextPiece) {
-            drawNextPiece();
-        }
-    }
+    }, 50);
 }
 
 // 初始调整画布尺寸
