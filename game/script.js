@@ -3,240 +3,47 @@ const COLS = 10;
 const ROWS = 20;
 const BLOCK_SIZE = 30;
 const NEXT_BLOCK_SIZE = 25;
-const NEXT_BLOCK_COLS = 4;
-const NEXT_BLOCK_ROWS = 4;
 
-// 游戏状态
+// 游戏状态变量
 let board = [];
 let currentPiece = null;
 let nextPiece = null;
+let holdPieceData = null; // 存储HOLD的方块
+let hasHeld = false; // 标记当前回合是否已经使用过HOLD
 let score = 0;
 let level = 1;
 let lines = 0;
-let gameInterval = null;
-let gameSpeed = 1000; // 毫秒
 let isGameRunning = false;
 let isPaused = false;
-
-// 获取DOM元素
-const canvas = document.getElementById('tetris-board');
-const ctx = canvas.getContext('2d');
-const nextCanvas = document.getElementById('next-piece-canvas');
-const nextCtx = nextCanvas.getContext('2d');
-const scoreElement = document.getElementById('score');
-const levelElement = document.getElementById('level');
-const linesElement = document.getElementById('lines');
-const startButton = document.getElementById('start-button');
-const pauseButton = document.getElementById('pause-button');
-const resetButton = document.getElementById('reset-button');
-const gameOverModal = document.getElementById('game-over-modal');
-const finalScoreElement = document.getElementById('final-score');
-const playAgainButton = document.getElementById('play-again-button');
-const toggleSoundButton = document.getElementById('toggle-sound');
-
-// 获取移动端触摸控制器按钮
-const leftButton = document.getElementById('left-button');
-const rightButton = document.getElementById('right-button');
-const downButton = document.getElementById('down-button');
-const rotateButton = document.getElementById('rotate-button');
-const dropButton = document.getElementById('drop-button');
-
-// 音效控制
-let soundEnabled = true;
+let gameInterval = null;
+let gameSpeed = 1000; // 初始速度（毫秒）
 let audioContext = null;
+let soundEnabled = true;
 
-// 调整画布尺寸以适应屏幕
-function adjustCanvasSize() {
-    // 更精确地检测移动设备
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-    
-    // 获取屏幕可用高度和宽度，考虑到安全区域
-    const windowHeight = window.innerHeight;
-    const windowWidth = window.innerWidth;
-    
-    // 移动控制区域现在是相对定位，不需要从视口高度减去
-    
-    if (isMobile) {
-        // 在移动设备上，优先考虑宽度来计算合适的方块大小
-        const maxBoardWidth = windowWidth - 40; // 减去更多边距，确保内容居中显示
-        const maxBoardHeight = windowHeight * 0.6; // 增加游戏板高度比例
-        
-        // 计算基于高度的方块大小
-        const blockSizeByHeight = Math.floor(maxBoardHeight / ROWS);
-        // 计算基于宽度的方块大小
-        const blockSizeByWidth = Math.floor(maxBoardWidth / COLS);
-        
-        // 取较小的值作为最终方块大小，确保能适应屏幕
-        const adjustedBlockSize = Math.min(blockSizeByHeight, blockSizeByWidth);
-        
-        // 设置调整后的尺寸
-        canvas.width = COLS * adjustedBlockSize;
-        canvas.height = ROWS * adjustedBlockSize;
-        
-        // 调整下一个方块预览的尺寸
-        const nextBlockScale = 0.7; // 下一个方块预览的缩放比例
-        nextCanvas.width = NEXT_BLOCK_COLS * adjustedBlockSize * nextBlockScale;
-        nextCanvas.height = NEXT_BLOCK_ROWS * adjustedBlockSize * nextBlockScale;
-        
-        // 存储调整后的方块大小，用于重绘
-        window.adjustedBlockSize = adjustedBlockSize;
-        
-        // 调整游戏容器的位置，确保在屏幕上居中且内容完全可见
-        const gameContainer = document.querySelector('.game-container');
-        if (gameContainer) {
-            // 重置任何之前的transform设置
-            gameContainer.style.transform = '';
-            gameContainer.style.marginTop = '0';
-            
-            // 移除高度限制，让内容可以自由流动
-            gameContainer.style.maxHeight = 'none';
-            gameContainer.style.overflow = 'visible';
-            
-            // 确保内容区域能够平滑滚动
-            gameContainer.style.scrollBehavior = 'smooth';
-            
-            // 优化游戏容器样式
-            gameContainer.style.padding = '15px';
-            gameContainer.style.maxWidth = '100%';
-            gameContainer.style.minHeight = 'auto';
-        }
-        
-        // 强制显示移动控制器，这是修复的关键部分
-        const mobileControls = document.getElementById('mobile-controls');
-        if (mobileControls) {
-            console.log('移动设备检测到，显示控制器');
-            mobileControls.style.display = 'block';
-            mobileControls.style.width = '100%';
-            mobileControls.style.marginTop = '20px';
-            mobileControls.style.position = 'relative';
-            mobileControls.style.zIndex = '10';
-            
-            // 确保控制按钮大小适中且可见
-            const padButtons = document.querySelectorAll('.pad-button');
-            padButtons.forEach(button => {
-                button.style.width = '80px';
-                button.style.height = '80px';
-                button.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-                button.style.color = 'white';
-                button.style.fontSize = '1.8rem';
-                button.style.opacity = '1';
-            });
-            
-            // 确保快速下落按钮可见
-            const actionButton = document.querySelector('.action-button');
-            if (actionButton) {
-                actionButton.style.display = 'flex';
-                actionButton.style.opacity = '1';
-            }
-        } else {
-            console.log('未找到移动控制器元素');
-        }
-    } else {
-        // 在桌面设备上使用原始尺寸
-        canvas.width = COLS * BLOCK_SIZE;
-        canvas.height = ROWS * BLOCK_SIZE;
-        nextCanvas.width = NEXT_BLOCK_COLS * NEXT_BLOCK_SIZE;
-        nextCanvas.height = NEXT_BLOCK_ROWS * NEXT_BLOCK_SIZE;
-        window.adjustedBlockSize = BLOCK_SIZE;
-        
-        // 重置游戏容器的位置和样式
-        const gameContainer = document.querySelector('.game-container');
-        if (gameContainer) {
-            gameContainer.style.transform = '';
-            gameContainer.style.maxHeight = 'none';
-            gameContainer.style.overflow = 'visible';
-            gameContainer.style.marginTop = '0';
-            gameContainer.style.scrollBehavior = 'auto';
-            
-            // 优化桌面样式
-            gameContainer.style.padding = '20px';
-            gameContainer.style.maxWidth = '900px';
-            gameContainer.style.minHeight = 'calc(100vh - 40px)';
-        }
-        
-        // 隐藏移动控制器
-        const mobileControls = document.getElementById('mobile-controls');
-        if (mobileControls) {
-            mobileControls.style.display = 'none';
-        }
-    }
-    
-    // 确保页面可以在移动设备上正常滚动
-    document.body.style.height = 'auto';
-    document.body.style.overflowY = 'auto';
-    document.documentElement.style.height = 'auto';
-    document.documentElement.style.overflowY = 'auto';
-    
-    // 强制重绘游戏
-        setTimeout(() => {
-            if (isGameRunning) {
-                drawBoard();
-                if (currentPiece) {
-                    drawCurrentPiece();
-                }
-                if (nextPiece) {
-                    drawNextPiece();
-                }
-            }
-            
-            // 再次确认并显示移动控制器
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-            if (isMobile) {
-                const mobileControls = document.getElementById('mobile-controls');
-                if (mobileControls) {
-                    mobileControls.style.display = 'block';
-                }
-            }
-        }, 50);
-}
+// DOM元素引用
+let canvas = null;
+let nextCanvas = null;
+let holdCanvas = null; // HOLD区域画布
+let ctx = null;
+let scoreElement = null;
+let levelElement = null;
+let linesElement = null;
+let startButton = null;
+let pauseButton = null;
+let resetButton = null;
+let gameOverModal = null;
+let finalScoreElement = null;
+let playAgainButton = null;
+let toggleSoundButton = null;
+let mobileControls = null;
+let holdButton = null; // HOLD按钮
 
-// 初始调整画布尺寸
-adjustCanvasSize();
-
-// 页面加载完成后立即检查并显示移动控制器
-function checkAndShowMobileControls() {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-    
-    if (isMobile) {
-        console.log('页面加载完成，检查并显示移动控制器');
-        const mobileControls = document.getElementById('mobile-controls');
-        if (mobileControls) {
-            mobileControls.style.display = 'block';
-            mobileControls.style.width = '100%';
-            mobileControls.style.position = 'relative';
-            mobileControls.style.zIndex = '10';
-            mobileControls.style.marginTop = '20px';
-        }
-    }
-}
-
-// 当页面加载完成时执行
-window.addEventListener('DOMContentLoaded', checkAndShowMobileControls);
-
-// 额外的保险措施，在窗口加载完成后再次检查
-window.addEventListener('load', checkAndShowMobileControls);
-
-// 监听窗口大小变化，调整画布尺寸
-window.addEventListener('resize', adjustCanvasSize);
-
-// 监听设备方向变化，重新调整画布尺寸
-window.addEventListener('orientationchange', adjustCanvasSize);
-
-// 监听触摸事件，防止页面滚动
-document.addEventListener('touchstart', function(e) {
-    // 阻止默认行为以防止页面滚动
-    e.preventDefault();
-}, { passive: false });
-
-document.addEventListener('touchmove', function(e) {
-    // 阻止默认行为以防止页面滚动
-    e.preventDefault();
-}, { passive: false });
-
-document.addEventListener('touchend', function(e) {
-    // 阻止默认行为
-    e.preventDefault();
-}, { passive: false });
+// 移动控制按钮
+let leftButton = null;
+let rightButton = null;
+let downButton = null;
+let rotateButton = null;
+let dropButton = null;
 
 // 方块形状定义
 const TETROMINOS = {
@@ -285,7 +92,65 @@ const COLORS = {
     ghost: 'rgba(255, 255, 255, 0.2)'
 };
 
-// 初始化Web Audio API
+// 初始化游戏尺寸
+function adjustCanvasSize() {
+    // 获取游戏容器尺寸
+    const gameContainer = document.querySelector('.tetris-game');
+    const containerWidth = gameContainer.offsetWidth;
+    const containerHeight = gameContainer.offsetHeight;
+    
+    // 检测是否为移动设备
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+    
+    // 根据屏幕尺寸计算合适的方块大小
+    let blockSize = BLOCK_SIZE;
+    
+    if (isMobile) {
+        // 在移动设备上，我们使用更紧凑的布局
+        blockSize = Math.min(
+            Math.floor((containerWidth - 40) / COLS), // 考虑左右边距
+            Math.floor((containerHeight * 0.4) / ROWS) // 使用容器高度的40%来放置游戏区域
+        );
+    } else if (isTablet) {
+        // 平板设备上的中等布局
+        blockSize = Math.min(
+            Math.floor((containerWidth * 0.5) / COLS), // 使用容器宽度的50%
+            Math.floor((containerHeight * 0.6) / ROWS) // 使用容器高度的60%
+        );
+    }
+    
+    // 存储调整后的方块大小
+    window.adjustedBlockSize = blockSize;
+    
+    // 设置游戏主画布尺寸
+    if (canvas) {
+        canvas.width = blockSize * COLS;
+        canvas.height = blockSize * ROWS;
+        ctx = canvas.getContext('2d');
+    }
+    
+    // 设置下一个方块预览画布尺寸
+    if (nextCanvas) {
+        nextCanvas.width = 100;
+        nextCanvas.height = 100;
+    }
+    
+    // 设置HOLD区域画布尺寸
+    if (holdCanvas) {
+        holdCanvas.width = 100;
+        holdCanvas.height = 100;
+    }
+    
+    // 重新绘制游戏
+    if (ctx) {
+        drawBoard();
+        drawNextPiece();
+        drawHoldPiece();
+    }
+}
+
+// 初始化音频系统
 function initAudio() {
     if (!audioContext && typeof AudioContext !== 'undefined') {
         try {
@@ -370,14 +235,11 @@ function toggleSound() {
     
     if (toggleSoundButton) {
         const icon = toggleSoundButton.querySelector('i');
-        const text = toggleSoundButton.querySelector('span');
         
         if (soundEnabled) {
             icon.className = 'fas fa-volume-up';
-            text.textContent = '音效: 开启';
         } else {
             icon.className = 'fas fa-volume-mute';
-            text.textContent = '音效: 关闭';
         }
     }
 }
@@ -646,8 +508,7 @@ function drawNextPiece() {
     if (nextPiece) {
         const shape = nextPiece.shape;
         const color = `rgba(${nextPiece.color}, 0.8)`;
-        const isMobile = window.innerWidth <= 768;
-        const nextBlockSize = isMobile ? (window.adjustedBlockSize || BLOCK_SIZE) * 0.8 : NEXT_BLOCK_SIZE;
+        const nextBlockSize = window.adjustedBlockSize || NEXT_BLOCK_SIZE;
         
         // 计算居中位置
         const offsetX = (nextCanvas.width - shape[0].length * nextBlockSize) / 2;
@@ -672,6 +533,50 @@ function drawNextPiece() {
                                    offsetY + y * nextBlockSize + padding, 
                                    nextBlockSize - padding * 2, 
                                    nextBlockSize - padding * 2);
+                }
+            }
+        }
+    }
+}
+
+// 绘制HOLD区域的方块
+function drawHoldPiece() {
+    const ctx = holdCanvas.getContext('2d');
+    ctx.clearRect(0, 0, holdCanvas.width, holdCanvas.height);
+    
+    // 绘制HOLD区域背景
+    ctx.fillStyle = '#2c3e50';
+    ctx.fillRect(0, 0, holdCanvas.width, holdCanvas.height);
+    
+    // 绘制HOLD的方块
+    if (holdPieceData) {
+        const shape = holdPieceData.shape;
+        const color = `rgba(${holdPieceData.color}, 0.8)`;
+        const holdBlockSize = window.adjustedBlockSize || NEXT_BLOCK_SIZE;
+        
+        // 计算居中位置
+        const offsetX = (holdCanvas.width - shape[0].length * holdBlockSize) / 2;
+        const offsetY = (holdCanvas.height - shape.length * holdBlockSize) / 2;
+        
+        for (let y = 0; y < shape.length; y++) {
+            for (let x = 0; x < shape[y].length; x++) {
+                if (shape[y][x]) {
+                    // 绘制HOLD方块
+                    const padding = 1;
+                    
+                    ctx.fillStyle = color;
+                    ctx.fillRect(offsetX + x * holdBlockSize + padding, 
+                                 offsetY + y * holdBlockSize + padding, 
+                                 holdBlockSize - padding * 2, 
+                                 holdBlockSize - padding * 2);
+                    
+                    // 绘制边框
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(offsetX + x * holdBlockSize + padding, 
+                                   offsetY + y * holdBlockSize + padding, 
+                                   holdBlockSize - padding * 2, 
+                                   holdBlockSize - padding * 2);
                 }
             }
         }
@@ -785,10 +690,51 @@ function gameLoop() {
     }
 }
 
+// HOLD方块功能
+function holdPiece() {
+    if (!isGameRunning || isPaused || hasHeld) {
+        return;
+    }
+    
+    if (holdPieceData) {
+        // 如果已经有HOLD的方块，则交换
+        const tempPiece = currentPiece;
+        currentPiece = {
+            ...holdPieceData,
+            x: Math.floor((COLS - holdPieceData.shape[0].length) / 2),
+            y: 0
+        };
+        holdPieceData = tempPiece;
+    } else {
+        // 如果没有HOLD的方块，则将当前方块存入HOLD，并生成新方块
+        holdPieceData = currentPiece;
+        currentPiece = nextPiece || createPiece();
+        nextPiece = createPiece();
+    }
+    
+    // 标记本回合已使用HOLD
+    hasHeld = true;
+    
+    // 重绘游戏状态
+    drawBoard();
+    drawNextPiece();
+    drawHoldPiece();
+    
+    // 播放音效
+    playSound('rotate');
+    
+    // 检查游戏是否结束
+    if (!isValidMove(currentPiece)) {
+        endGame();
+    }
+}
+
 // 生成新方块
 function spawnNewPiece() {
     currentPiece = nextPiece || createPiece();
     nextPiece = createPiece();
+    // 重置HOLD标记
+    hasHeld = false;
     drawNextPiece();
     
     // 绘制幽灵方块（显示方块将落到的位置）
@@ -803,6 +749,8 @@ function startGame() {
     lines = 0;
     isGameRunning = true;
     isPaused = false;
+    holdPieceData = null;
+    hasHeld = false;
     
     // 更新显示
     scoreElement.textContent = score;
@@ -860,6 +808,8 @@ function resetGame() {
     // 重置游戏状态
     isGameRunning = false;
     isPaused = false;
+    holdPieceData = null;
+    hasHeld = false;
     
     // 更新按钮状态
     startButton.disabled = false;
@@ -879,6 +829,7 @@ function resetGame() {
     // 重绘游戏
     drawBoard();
     drawNextPiece();
+    drawHoldPiece();
     
     // 隐藏游戏结束弹窗
     gameOverModal.classList.add('hidden');
@@ -965,6 +916,13 @@ function handleKeyPress(event) {
                 }
             }, 50);
             break;
+        case 'Shift':
+        case 'Control':
+        case 'c':
+        case 'C':
+            // 使用Shift、Ctrl或C键来触发HOLD功能
+            holdPiece();
+            break;
         case 'p':
         case 'P':
             pauseGame();
@@ -972,24 +930,87 @@ function handleKeyPress(event) {
     }
 }
 
+// 确保移动控制器在页面加载时可见
+function checkAndShowMobileControls() {
+    console.log('检查并显示移动控制器');
+    
+    // 确保移动控制器始终可见
+    if (mobileControls) {
+        mobileControls.style.display = 'block';
+        mobileControls.style.width = '100%';
+        mobileControls.style.position = 'relative';
+        mobileControls.style.zIndex = '10';
+        mobileControls.style.marginTop = 'auto';
+    }
+}
+
 // 初始化游戏
 function initGame() {
+    // 获取DOM元素引用
+    canvas = document.getElementById('tetris-board');
+    nextCanvas = document.getElementById('next-piece-canvas');
+    holdCanvas = document.getElementById('hold-canvas');
+    scoreElement = document.getElementById('score');
+    levelElement = document.getElementById('level');
+    linesElement = document.getElementById('lines');
+    startButton = document.getElementById('start-button');
+    pauseButton = document.getElementById('pause-button');
+    resetButton = document.getElementById('reset-button');
+    gameOverModal = document.getElementById('game-over-modal');
+    finalScoreElement = document.getElementById('final-score');
+    playAgainButton = document.getElementById('play-again-button');
+    toggleSoundButton = document.getElementById('toggle-sound');
+    
+    // 获取移动控制按钮
+    leftButton = document.getElementById('left-button');
+    rightButton = document.getElementById('right-button');
+    downButton = document.getElementById('down-button');
+    rotateButton = document.getElementById('rotate-button');
+    dropButton = document.getElementById('drop-button');
+    holdButton = document.getElementById('hold-button');
+    mobileControls = document.querySelector('.mobile-controls');
+    
+    // 确保获取到了所有必要的元素
+    console.log('DOM元素获取情况:', {
+        canvas: !!canvas,
+        startButton: !!startButton,
+        leftButton: !!leftButton,
+        mobileControls: !!mobileControls
+    });
+    
     // 初始化游戏板
     initializeBoard();
     
     // 初始化音频系统
     initAudio();
     
+    // 调整画布尺寸
+    adjustCanvasSize();
+    
     // 绘制初始游戏板
     drawBoard();
     drawNextPiece();
+    drawHoldPiece();
+    
+    // 确保移动控制器可见
+    checkAndShowMobileControls();
     
     // 添加事件监听
-    startButton.addEventListener('click', startGame);
-    pauseButton.addEventListener('click', pauseGame);
-    resetButton.addEventListener('click', resetGame);
-    playAgainButton.addEventListener('click', startGame);
-    toggleSoundButton.addEventListener('click', toggleSound);
+    if (startButton) {
+        startButton.addEventListener('click', startGame);
+    }
+    if (pauseButton) {
+        pauseButton.addEventListener('click', pauseGame);
+    }
+    if (resetButton) {
+        resetButton.addEventListener('click', resetGame);
+    }
+    if (playAgainButton) {
+        playAgainButton.addEventListener('click', startGame);
+    }
+    if (toggleSoundButton) {
+        toggleSoundButton.addEventListener('click', toggleSound);
+    }
     document.addEventListener('keydown', handleKeyPress);
     
     // 添加点击事件以启用音效（解决自动播放限制）
@@ -1005,10 +1026,10 @@ function initGame() {
     document.addEventListener('touchstart', checkAndResumeAudio);
     
     // 添加移动端触摸控制事件监听，使用更可靠的事件处理方式
-    
-    // 使用一个辅助函数来绑定触摸事件，确保在所有移动设备上都能正常工作
     function bindTouchEvent(element, callback) {
         if (element) {
+            console.log(`绑定触摸事件到: ${element.id}`);
+            
             // 同时绑定touchstart和mousedown事件，以确保兼容性
             element.addEventListener('touchstart', (e) => {
                 e.preventDefault();
@@ -1087,6 +1108,13 @@ function initGame() {
         }
     });
     
+    // 绑定HOLD按钮事件
+    bindTouchEvent(holdButton, () => {
+        if (isGameRunning && !isPaused) {
+            holdPiece();
+        }
+    });
+    
     // 为移动设备添加长按加速功能
     let holdTimer;
     
@@ -1129,5 +1157,36 @@ function initGame() {
     }
 }
 
-// 启动游戏
-initGame();
+// 页面加载完成时执行
+window.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM内容加载完成');
+    initGame();
+    
+    // 调整画布尺寸
+    adjustCanvasSize();
+});
+
+// 窗口大小变化时调整画布尺寸
+window.addEventListener('resize', adjustCanvasSize);
+
+// 设备方向变化时调整画布尺寸
+window.addEventListener('orientationchange', adjustCanvasSize);
+
+// 监听触摸事件，防止页面滚动
+document.addEventListener('touchstart', function(e) {
+    // 阻止默认行为以防止页面滚动
+    e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchmove', function(e) {
+    // 阻止默认行为以防止页面滚动
+    e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchend', function(e) {
+    // 阻止默认行为
+    e.preventDefault();
+}, { passive: false });
+
+// 确保移动控制器在页面加载后立即显示
+window.addEventListener('load', checkAndShowMobileControls);
