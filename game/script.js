@@ -101,18 +101,35 @@ function adjustCanvasSize() {
             gameContainer.style.minHeight = 'auto';
         }
         
-        // 优化触摸控制器区域
-        const mobileControls = document.querySelector('.mobile-controls');
+        // 强制显示移动控制器，这是修复的关键部分
+        const mobileControls = document.getElementById('mobile-controls');
         if (mobileControls) {
+            console.log('移动设备检测到，显示控制器');
             mobileControls.style.display = 'block';
             mobileControls.style.width = '100%';
             mobileControls.style.marginTop = '20px';
-            // 确保控制按钮大小适中
+            mobileControls.style.position = 'relative';
+            mobileControls.style.zIndex = '10';
+            
+            // 确保控制按钮大小适中且可见
             const padButtons = document.querySelectorAll('.pad-button');
             padButtons.forEach(button => {
                 button.style.width = '80px';
                 button.style.height = '80px';
+                button.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                button.style.color = 'white';
+                button.style.fontSize = '1.8rem';
+                button.style.opacity = '1';
             });
+            
+            // 确保快速下落按钮可见
+            const actionButton = document.querySelector('.action-button');
+            if (actionButton) {
+                actionButton.style.display = 'flex';
+                actionButton.style.opacity = '1';
+            }
+        } else {
+            console.log('未找到移动控制器元素');
         }
     } else {
         // 在桌面设备上使用原始尺寸
@@ -138,7 +155,7 @@ function adjustCanvasSize() {
         }
         
         // 隐藏移动控制器
-        const mobileControls = document.querySelector('.mobile-controls');
+        const mobileControls = document.getElementById('mobile-controls');
         if (mobileControls) {
             mobileControls.style.display = 'none';
         }
@@ -151,21 +168,53 @@ function adjustCanvasSize() {
     document.documentElement.style.overflowY = 'auto';
     
     // 强制重绘游戏
-    setTimeout(() => {
-        if (isGameRunning) {
-            drawBoard();
-            if (currentPiece) {
-                drawCurrentPiece();
+        setTimeout(() => {
+            if (isGameRunning) {
+                drawBoard();
+                if (currentPiece) {
+                    drawCurrentPiece();
+                }
+                if (nextPiece) {
+                    drawNextPiece();
+                }
             }
-            if (nextPiece) {
-                drawNextPiece();
+            
+            // 再次确认并显示移动控制器
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+            if (isMobile) {
+                const mobileControls = document.getElementById('mobile-controls');
+                if (mobileControls) {
+                    mobileControls.style.display = 'block';
+                }
             }
-        }
-    }, 50);
+        }, 50);
 }
 
 // 初始调整画布尺寸
 adjustCanvasSize();
+
+// 页面加载完成后立即检查并显示移动控制器
+function checkAndShowMobileControls() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    if (isMobile) {
+        console.log('页面加载完成，检查并显示移动控制器');
+        const mobileControls = document.getElementById('mobile-controls');
+        if (mobileControls) {
+            mobileControls.style.display = 'block';
+            mobileControls.style.width = '100%';
+            mobileControls.style.position = 'relative';
+            mobileControls.style.zIndex = '10';
+            mobileControls.style.marginTop = '20px';
+        }
+    }
+}
+
+// 当页面加载完成时执行
+window.addEventListener('DOMContentLoaded', checkAndShowMobileControls);
+
+// 额外的保险措施，在窗口加载完成后再次检查
+window.addEventListener('load', checkAndShowMobileControls);
 
 // 监听窗口大小变化，调整画布尺寸
 window.addEventListener('resize', adjustCanvasSize);

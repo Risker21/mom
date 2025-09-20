@@ -424,14 +424,14 @@ body {
 
 /* 移动端触摸控制器样式 */
 .mobile-controls {
-    display: none; /* 默认隐藏，在移动设备上显示 */
+    display: none; /* 默认隐藏，在移动设备上通过JavaScript显示 */
     position: relative;
     width: 100%;
     background: rgba(0, 0, 0, 0.8);
     padding: 20px;
     box-sizing: border-box;
     backdrop-filter: blur(10px);
-    z-index: 1;
+    z-index: 10;
     padding-bottom: env(safe-area-inset-bottom, 30px);
     /* 确保控制区域不会被系统UI遮挡 */
     height: auto;
@@ -594,12 +594,9 @@ body {
         font-size: 0.9rem;
     }
     
-    /* 在移动设备上显示触摸控制器，隐藏操作说明 */
-    .mobile-controls {
-        display: block;
-        position: relative;
-        width: 100%;
-        margin-top: 20px;
+    /* 在移动设备上隐藏操作说明 */
+    .game-instructions {
+        display: none;
     }
     
     .game-instructions {
