@@ -559,13 +559,23 @@ body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
+        gap: 10px;
+        margin: 10px 0;
     }
     
     .control-button {
-        padding: 8px 15px;
-        font-size: 14px;
-        min-width: 120px;
+        padding: 12px 25px;
+        font-size: 16px;
+        min-width: 150px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+    
+    .control-button:active {
+        transform: scale(0.95);
     }
     
     /* 隐藏键盘控制信息 */
@@ -575,9 +585,14 @@ body {
     
     /* 优化移动端触摸控制器 */
     .mobile-controls {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
         margin-top: 5px;
         margin-bottom: 10px;
         gap: 20px;
+        width: 100%;
+        max-width: 500px;
     }
     
     .pad-button {
@@ -664,11 +679,15 @@ body {
     
     /* 移动端触摸控制器适应横屏 */
     .mobile-controls {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         order: 3;
         margin-top: 10px;
         margin-bottom: 5px;
         gap: 15px;
+        max-width: 500px;
     }
     
     /* 减小按钮尺寸以适应横屏 */

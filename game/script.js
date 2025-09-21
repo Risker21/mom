@@ -455,7 +455,7 @@ function drawBoard() {
         ctx.font = '30px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('PAUSED', canvas.width / 2, canvas.height / 2);
+        ctx.fillText('游戏暂停', canvas.width / 2, canvas.height / 2);
     }
 }
 
