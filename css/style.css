@@ -27,7 +27,7 @@ img{max-width:100%;}
 /*end reset*/
 body {
     /*background: url(../images/图55.jpeg)no-repeat;*/
-	background: url(../images/国庆一.png)no-repeat;
+	background: url(../images/国庆一.jpg)no-repeat;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -707,5 +707,6 @@ span.fa {
 }
 
 /*--//responsive--*/
+
 
 
